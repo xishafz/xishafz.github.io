@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>2026秋冬中高端产品手册</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; background:#f4f4f2; color:#222; }
+.view { display:none; }
+.view.active { display:block; }
+.header { position:sticky; top:0; z-index:100; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:14px 16px; }
+.header h1 { font-size:17px; font-weight:700; letter-spacing:.5px; }
+.header .sub { font-size:12px; color:#888; margin-top:3px; }
+.back-btn { display:none; float:left; margin-right:10px; font-size:15px; line-height:22px; cursor:pointer; color:#333; padding:0 6px; }
+/* 封面轮播 */
+.swiper { position:relative; overflow:hidden; border-radius:10px; margin:16px 16px 0; background:#e8e8e6; }
+.swiper-track { display:flex; transition:transform .35s ease; }
+.swiper-track img { width:100%; flex:none; aspect-ratio:2560/1768; object-fit:cover; display:block; cursor:pointer; background:#e8e8e6; }
+.swiper-dots { position:absolute; bottom:8px; left:0; right:0; display:flex; justify-content:center; gap:6px; }
+.swiper-dots i { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.55); display:block; transition:all .2s; }
+.swiper-dots i.on { background:#fff; width:18px; border-radius:4px; }
+.cat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:16px; }
+.cat-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); cursor:pointer; }
+.cat-card img { width:100%; height:110px; object-fit:cover; display:block; }
+.cat-card .cat-name { font-size:14px; font-weight:600; padding:9px 12px 4px; }
+.cat-card .cat-count { font-size:11px; color:#999; padding:0 12px 10px; }
+.list-header { padding:14px 16px 0; }
+.list-header .list-title { font-size:18px; font-weight:700; }
+.list-header .list-desc { font-size:12px; color:#888; margin-top:4px; }
+.grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:14px 16px 20px; }
+.grid-card { background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); cursor:pointer; }
+.grid-card img { width:100%; aspect-ratio:2560/1768; object-fit:cover; display:block; }
+.grid-card .gc-name { font-size:13px; font-weight:600; padding:8px 10px 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.grid-card .gc-desc { font-size:11px; color:#999; padding:0 10px 9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.detail-wrap { padding:14px 16px 24px; }
+.detail-img { width:100%; border-radius:10px; display:block; background:#fff; }
+.detail-name { font-size:17px; font-weight:700; margin-top:14px; }
+.detail-desc { font-size:13px; color:#666; margin-top:6px; line-height:1.6; }
+.detail-tip { font-size:12px; color:#999; margin-top:10px; background:#fff; border-radius:8px; padding:10px 12px; }
+.detail-tip b { color:#c0392b; }
+.about-wrap { padding:0 16px 24px; }
+.about-title { font-size:16px; font-weight:700; margin:6px 0 12px; }
+.about-img { width:100%; border-radius:10px; display:block; cursor:pointer; margin-bottom:10px; }
+.foot-text { text-align:center; font-size:11px; color:#bbb; padding:14px 0 24px; }
+.lightbox { position:fixed; inset:0; background:rgba(0,0,0,.96); z-index:200; display:none; justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
+.lightbox.show { display:flex; }
+.lightbox .lb-stage { width:100%; height:100%; display:flex; justify-content:center; align-items:center; position:relative; touch-action:none; }
+.lightbox img { max-width:96%; max-height:90vh; border-radius:6px; transform-origin:center center; transition:transform .18s ease; -webkit-user-select:none; user-select:none; }
+.lightbox .lb-name { color:#fff; font-size:14px; margin-top:8px; padding:0 20px; text-align:center; position:absolute; bottom:44px; left:0; right:0; }
+.lightbox .lb-tip { color:#aaa; font-size:12px; margin-top:6px; position:absolute; bottom:14px; left:0; right:0; text-align:center; }
+.lightbox .lb-close { position:absolute; top:10px; right:14px; color:#fff; font-size:26px; cursor:pointer; padding:8px; z-index:10; }
+</style>
+</head>
+<body>
+<script>
+var DATA = {"config":{"brand":"2026秋冬中高端产品手册","brandSub":"以极致供应链能力，赋能品牌创造价值","foot":"2026秋冬中高端产品手册"},"about":"https://aka.doubaocdn.com/s/kUSRSgOVCt","cats":[{"id":"chongfeng","name":"冲锋衣·三合一","count":"19款","desc":"轻量化冲锋衣 · 三合一两件套 · 防护冲锋衣","cover":"https://aka.doubaocdn.com/s/9trdZTag9T","items":[{"name":"轻量化冲锋衣 #250805","img":"https://aka.doubaocdn.com/s/9trdZTag9T","desc":"轻量化硬壳 防水透湿"},{"name":"女士短款连帽冲锋衣 #251808","img":"https://aka.doubaocdn.com/s/k68SsvTKGC","desc":"国家二级冲锋衣标准"},{"name":"立领一体冲锋衣 #251803","img":"https://aka.doubaocdn.com/s/cESjwmOczP","desc":"静水压10000 火山岩棉袖"},{"name":"高太尔防护冲锋衣 #230833","img":"https://aka.doubaocdn.com/s/M9jmGzEgmZ","desc":"CAO7001 TPU透气膜"},{"name":"三合一防护两件套 #220801","img":"https://aka.doubaocdn.com/s/pQtUHTxWlx","desc":"摇粒绒内胆 四面弹防风防水"},{"name":"三合一软壳两件套 #261809","img":"https://aka.doubaocdn.com/s/HUrVsYMj5P","desc":"T400抓条 静水压5000+"},{"name":"三合一暖绒两件套 #261815","img":"https://aka.doubaocdn.com/s/ilC7jF5J5w","desc":"3M新雪丽棉内胆"},{"name":"三合一防护两件套 #95588","img":"https://aka.doubaocdn.com/s/LuqtnZQnqd","desc":"300克摇粒绒内胆 可定制"},{"name":"三合一防护两件套 #220805","img":"https://aka.doubaocdn.com/s/6BQmBhUSYV","desc":"杜邦三防科技 摇粒内胆"},{"name":"三合一防护两件套 #230821","img":"https://aka.doubaocdn.com/s/7zVffIR6L8","desc":"特氟龙三防 320克摇粒内胆"},{"name":"三合一防护两件套 #250809A","img":"https://aka.doubaocdn.com/s/6M2jxM7g6y","desc":"3D高弹 全压胶拉链"},{"name":"三合一防护两件套 #220807","img":"https://aka.doubaocdn.com/s/GqPnPx6iUf","desc":"银狐绒内胆 四防功能"},{"name":"三合一商旅两件套 #250827","img":"https://aka.doubaocdn.com/s/OdbBJRpcZT","desc":"气凝胶科技内胆"},{"name":"三合一防护两件套 #250895","img":"https://aka.doubaocdn.com/s/Oa8dniS2l9","desc":"桃皮绒小牛津 320克摇粒"},{"name":"三合一防护冲锋衣 #251801","img":"https://aka.doubaocdn.com/s/Vb7befjL07","desc":"静水压10000 国家二级"},{"name":"三合一防护冲锋衣 #230831","img":"https://aka.doubaocdn.com/s/QtWRPJhbm7","desc":"高透戈尔压胶 全压胶无缝"},{"name":"三合一防护冲锋衣 #95566","img":"https://aka.doubaocdn.com/s/fBrUz6VBUs","desc":"高水压20000mm 全压胶热封"},{"name":"三合一防护冲锋衣 #250891","img":"https://aka.doubaocdn.com/s/EQNezM7sv6","desc":"杜邦三防 360g摇粒内胆"},{"name":"三合一防护羽绒冲锋衣 #230831Y","img":"https://aka.doubaocdn.com/s/knTJIEqH0B","desc":"90%鸭绒 石墨烯聚热"}],"children":[{"id":"sub1","name":"二级分类1","desc":"测试测试112233","cover":"https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/76c6c29b724c43beada4eac57671424a.jpg~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202609080038073C9C2DC2DAD07292D66B&rrcfp=935dee89&x-expires=1789404391&x-signature=cjvtnDWRSzCgP4a0CCXHTXjSCzI%3D","children":[{"id":"sub3","name":"三级分类1","desc":"","cover":"","children":[],"items":[{"name":"新款式445566","img":"https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/76c6c29b724c43beada4eac57671424a.jpg~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202609080038073C9C2DC2DAD07292D66B&rrcfp=935dee89&x-expires=1789404391&x-signature=cjvtnDWRSzCgP4a0CCXHTXjSCzI%3D","desc":"223344"},{"name":"新款式121","img":"https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/76c6c29b724c43beada4eac57671424a.jpg~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202609080038073C9C2DC2DAD07292D66B&rrcfp=935dee89&x-expires=1789404391&x-signature=cjvtnDWRSzCgP4a0CCXHTXjSCzI%3D","desc":"121"},{"name":"新款式","img":"","desc":""}]}],"items":[{"name":"新款式11测试二级分类","img":"https://aka.doubaocdn.com/s/9trdZTag9T","desc":"111"}]},{"id":"sub2","name":"二级分类2","desc":"裤子 二级111测试","cover":"https://ncstatic.clewm.net/rsrc/2026/0907/16/961e509862af7f179b1decc50c1b468f.jpg?x-oss-process=image/resize,w_750/quality,q_50/interlace,1/auto-orient,1/watermark,image_cmVzL3VzZXItd20tdjIvb3JOWGpaQGdyZXkucG5nP3gtb3NzLXByb2Nlc3M9aW1hZ2UvcmVzaXplLGhfNDY,x_24,y_24,t_85/format,gif","children":[{"id":"sub4","name":"三级分类1","desc":"裤子三级333","cover":"https://ncstatic.clewm.net/rsrc/2026/0907/16/961e509862af7f179b1decc50c1b468f.jpg?x-oss-process=image/resize,w_750/quality,q_50/interlace,1/auto-orient,1/watermark,image_cmVzL3VzZXItd20tdjIvb3JOWGpaQGdyZXkucG5nP3gtb3NzLXByb2Nlc3M9aW1hZ2UvcmVzaXplLGhfNDY,x_24,y_24,t_85/format,gif","children":[],"items":[{"name":"新款式44","img":"https://ncstatic.clewm.net/rsrc/2026/0907/16/961e509862af7f179b1decc50c1b468f.jpg?x-oss-process=image/resize,w_750/quality,q_50/interlace,1/auto-orient,1/watermark,image_cmVzL3VzZXItd20tdjIvb3JOWGpaQGdyZXkucG5nP3gtb3NzLXByb2Nlc3M9aW1hZ2UvcmVzaXplLGhfNDY,x_24,y_24,t_85/format,gif","desc":"裤子裤子测试测试"},{"name":"新款式","img":"","desc":""}]}],"items":[]}]},{"id":"ruanke","name":"软壳衣","count":"7款","desc":"连帽软壳 · 立领商务 · 防护软壳","cover":"https://aka.doubaocdn.com/s/GvpYrYc2UD","items":[{"name":"连帽休闲软壳衣 #231001","img":"https://aka.doubaocdn.com/s/GvpYrYc2UD","desc":"小方格摇粒320g 360°防风"},{"name":"连帽软壳衣 #261717","img":"https://aka.doubaocdn.com/s/DwUXFgpul2","desc":"三格摇粒 防冷风连帽"},{"name":"连帽休闲软壳衣 #251709","img":"https://aka.doubaocdn.com/s/vKqf32KhLX","desc":"三合一复合棉服款 防风保暖"},{"name":"立领行政商旅软壳衣 #251711","img":"https://aka.doubaocdn.com/s/49eFzlRTLe","desc":"复合摇粒绒 四防防水"},{"name":"连帽户外软壳衣 #251003","img":"https://aka.doubaocdn.com/s/CanxyAnU3G","desc":"小方格摇粒 3D裁剪"},{"name":"立领商务软壳衣 #231005","img":"https://aka.doubaocdn.com/s/lrQeMQyP3j","desc":"小方格摇粒 商务利落"},{"name":"防护连帽软壳衣 #251716","img":"https://aka.doubaocdn.com/s/autjQQpbwH","desc":"收腰抽绳 显高显瘦"}],"children":[]},{"id":"fengyi","name":"风衣","count":"9款","desc":"轻弹软壳风衣 · 连帽休闲 · 短款风衣","cover":"https://aka.doubaocdn.com/s/9V9iEPgDFw","items":[{"name":"轻弹软壳风衣 #261245","img":"https://aka.doubaocdn.com/s/9V9iEPgDFw","desc":"可调节防风连帽 马蹄袖"},{"name":"弹力风衣 #251233","img":"https://aka.doubaocdn.com/s/aNdhFHoq5A","desc":"四面弹 防泼水"},{"name":"弹力风衣 #261251","img":"https://aka.doubaocdn.com/s/xepovM8D2D","desc":"凉感面料 舒适弹力"},{"name":"轻量化风衣外套 #251105","img":"https://aka.doubaocdn.com/s/a3mwXi3Tvi","desc":"轻量化科技 压胶防风"},{"name":"风衣外套 #261241","img":"https://aka.doubaocdn.com/s/QyJ1XXWOgT","desc":"提花格子面料 立体壳帽"},{"name":"连帽休闲风衣外套 #251805","img":"https://aka.doubaocdn.com/s/YsZ6J7d3wj","desc":"透气15mm/s 四级防泼水"},{"name":"连帽休闲风衣外套 #251101","img":"https://aka.doubaocdn.com/s/nf0TnafQb1","desc":"防水透湿5000+ 三拉链机能"},{"name":"户外休闲风衣外套 #250809","img":"https://aka.doubaocdn.com/s/DNvuvcaVrf","desc":"全压胶透湿 四级防泼水"},{"name":"短款风衣外套 #251108","img":"https://aka.doubaocdn.com/s/kcnV2EDSo7","desc":"短款宽松廓形 三拉链机能"}]},{"id":"tixu","name":"长袖T恤","count":"5款","desc":"针织 · 亨利领 · 半开衫 · 翻领","cover":"https://aka.doubaocdn.com/s/eBFEGmQ7Px","items":[{"name":"针织长袖T恤 #261575","img":"https://aka.doubaocdn.com/s/eBFEGmQ7Px","desc":"Sorona索罗那 7A抗菌"},{"name":"亨利领长袖T恤 #261577","img":"https://aka.doubaocdn.com/s/S2EYU4SFgR","desc":"无缝暗扣亨利领 裸感面料"},{"name":"半开衫长袖T恤 #2515559","img":"https://aka.doubaocdn.com/s/kwDvHh27jb","desc":"棉感弹力布 半开拉链立领"},{"name":"半开衫翻领长袖T恤 #261579","img":"https://aka.doubaocdn.com/s/ylNOaQJGkr","desc":"拼接立领 7A抗菌"},{"name":"针织开衫长袖T恤 #261580","img":"https://aka.doubaocdn.com/s/iGWFVLX7FA","desc":"压胶口袋拉链 7A抗菌"}]},{"id":"yurong","name":"羽绒服","count":"7款","desc":"商旅休闲羽绒服 · 三合一羽绒两件套","cover":"https://aka.doubaocdn.com/s/ssJmHijQfR","items":[{"name":"商旅休闲羽绒服 #262001","img":"https://aka.doubaocdn.com/s/ssJmHijQfR","desc":"90%白鸭绒 防泼水"},{"name":"三合一羽绒两件套 #261907","img":"https://aka.doubaocdn.com/s/M9sPGOaIYt","desc":"90绒内胆 轻盈保暖"},{"name":"三合一羽绒两件套 #251905","img":"https://aka.doubaocdn.com/s/IASVCfcqp3","desc":"石墨烯聚热 90%鸭绒"},{"name":"三合一羽绒两件套 #250826","img":"https://aka.doubaocdn.com/s/o3bfRLLWQX","desc":"90%白鸭绒 石墨烯发热"},{"name":"三合一羽绒两件套 #250829","img":"https://aka.doubaocdn.com/s/8QbzUMrnxe","desc":"90%白鹅绒 石墨烯聚热"},{"name":"三合一商旅羽绒两件套 #251903Y","img":"https://aka.doubaocdn.com/s/47KzwMrzdu","desc":"90鸭绒 商务出行"},{"name":"三合一商旅羽绒两件套 #250827Y","img":"https://aka.doubaocdn.com/s/GyKt2WkRpq","desc":"90%羽绒无缝内胆"}]},{"id":"mianfu","name":"棉服","count":"3款","desc":"3M新雪丽科技棉服","cover":"https://aka.doubaocdn.com/s/nPmlny6ZWf","items":[{"name":"立领一体科技棉服 #252011","img":"https://aka.doubaocdn.com/s/nPmlny6ZWf","desc":"3M新雪丽 轻暖聚热"},{"name":"3M新雪丽一体科技棉服 #262007","img":"https://aka.doubaocdn.com/s/Ee1sLBql9V","desc":"高蓬不缩绒 抗菌耐水洗"},{"name":"可脱帽一体科技棉服 #252013","img":"https://aka.doubaocdn.com/s/IN58AiQJa5","desc":"3M新雪丽 可脱帽"}]},{"id":"changku","name":"长裤","count":"5款","desc":"休闲四季裤 · 软壳冲锋裤","cover":"https://aka.doubaocdn.com/s/JSVZzmPTkr","items":[{"name":"弹力休闲四季裤 #251655","img":"https://aka.doubaocdn.com/s/JSVZzmPTkr","desc":"320D登山呢 免烫抗皱"},{"name":"摇粒软壳冲锋裤 #250287","img":"https://aka.doubaocdn.com/s/8tpqGVcwms","desc":"小方格摇粒 防泼水保暖"},{"name":"超细绒软壳冲锋裤 #250289","img":"https://aka.doubaocdn.com/s/1ya8KHccNl","desc":"牛奶丝拉绒 防风防泼水"},{"name":"软壳冲锋裤 #261619","img":"https://aka.doubaocdn.com/s/VKMoQKwRHh","desc":"牛奶丝复合 四向抗泼水"},{"name":"软壳冲锋裤 #261621","img":"https://aka.doubaocdn.com/s/SX8jay05Cb","desc":"四面弹复合 免烫工艺"}]},{"id":"jiake","name":"夹克","count":"2款","desc":"软壳夹克 · 行政商旅夹克","cover":"https://aka.doubaocdn.com/s/r9u8v0nW4S","items":[{"name":"轻弹软壳夹克 #261243","img":"https://aka.doubaocdn.com/s/r9u8v0nW4S","desc":"尼龙登山布 吸湿排汗"},{"name":"立领行政商旅夹克 #251107","img":"https://aka.doubaocdn.com/s/JaFFvTvw6J","desc":"静水压5000+ 四面弹"}]},{"id":"majia","name":"马甲","count":"2款","desc":"立领软壳马甲 · 科技棉马甲","cover":"https://aka.doubaocdn.com/s/BHGPkU3iVs","items":[{"name":"立领软壳马甲 #251707","img":"https://aka.doubaocdn.com/s/BHGPkU3iVs","desc":"四面弹三合一 防泼水防风"},{"name":"立领科技棉马甲 #252009","img":"https://aka.doubaocdn.com/s/Orx02d5oI1","desc":"3M新雪丽保暖棉 防泼水"}]},{"id":"zhuarong","name":"抓绒衣","count":"1款","desc":"抓绒开衫外套","cover":"https://aka.doubaocdn.com/s/B9PVNhrpua","items":[{"name":"抓绒衣开衫外套 #252101","img":"https://aka.doubaocdn.com/s/B9PVNhrpua","desc":"300克超细摇粒绒 立领保暖"}]}],"covers":["https://aka.doubaocdn.com/s/4hV1n5oZGd","https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/76c6c29b724c43beada4eac57671424a.jpg~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202609080038073C9C2DC2DAD07292D66B&rrcfp=935dee89&x-expires=1789404391&x-signature=cjvtnDWRSzCgP4a0CCXHTXjSCzI%3D"]};
+var CONFIG = DATA.config || {brand:"2026秋冬中高端产品手册",brandSub:"",foot:""};
+var CATS = DATA.cats || [];
+var COVERS = DATA.covers || [];
+var ABOUT = DATA.about || "";
+</script>
+<div class="view" id="view-home">
+  <div class="header"><h1 id="h-brand"></h1><div class="sub" id="h-sub"></div></div>
+  <div class="swiper" id="swiper"><div class="swiper-track" id="swiper-track"></div><div class="swiper-dots" id="swiper-dots"></div></div>
+  <div class="cat-grid" id="cat-grid"></div>
+  <div class="about-wrap">
+    <div class="about-title">品牌资质</div>
+    <img class="about-img" id="about-img" alt="资质">
+  </div>
+  <div class="foot-text" id="foot-text"></div>
+</div>
+<div class="view" id="view-list">
+  <div class="header"><span class="back-btn" id="back-list">‹ 返回</span><h1 id="list-title"></h1><div class="sub" id="list-desc"></div></div>
+  <div class="grid" id="grid"></div>
+</div>
+<div class="view" id="view-item">
+  <div class="header"><span class="back-btn" id="back-item">‹ 返回</span><h1 id="item-title"></h1></div>
+  <div class="detail-wrap">
+    <img class="detail-img" id="detail-img" alt="产品大图">
+    <div class="detail-name" id="detail-name"></div>
+    <div class="detail-desc" id="detail-desc"></div>
+    <div class="detail-tip"><b>点击图片放大查看细节</b>（可双指缩放、拖动）；长按图片可保存，或扫图片中的二维码查看详情。</div>
+  </div>
+</div>
+<div class="lightbox" id="lightbox">
+  <span class="lb-close" id="lb-close">✕</span>
+  <div class="lb-stage" id="lb-stage"><img id="lb-img" alt="大图"></div>
+  <div class="lb-name" id="lb-name"></div>
+  <div class="lb-tip">单击图片放大/还原 · 双指缩放 · 拖动查看细节 · 长按可保存</div>
+</div>
+<script>
+var $ = function(id){ return document.getElementById(id); };
+var state = { path: [], idx: null };
+function findNode(ids){
+  var arr = CATS;
+  var node = null;
+  for(var i=0;i<ids.length;i++){
+    node = arr.find(function(x){ return x.id===ids[i]; });
+    if(!node) return null;
+    arr = node.children || [];
+  }
+  return node;
+}
+function countItems(node){
+  var c = (node.items||[]).length;
+  (node.children||[]).forEach(function(ch){ c += countItems(ch); });
+  return c;
+}
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function setView(v){ ["view-home","view-list","view-item"].forEach(function(x){ $(x).classList.remove("active"); }); $(v).classList.add("active"); window.scrollTo(0,0); }
+/* ---- 首页 ---- */
+var sw = { idx:0, timer:null, startX:0, startT:0 };
+function swGo(i){
+  if(!COVERS.length) return;
+  sw.idx = (i + COVERS.length) % COVERS.length;
+  $("swiper-track").style.transform = "translateX(-" + (sw.idx*100) + "%)";
+  var dots = $("swiper-dots").children;
+  for(var j=0;j<dots.length;j++){ dots[j].className = (j===sw.idx) ? "on" : ""; }
+}
+function swStart(){ if(sw.timer) clearInterval(sw.timer); if(COVERS.length>1) sw.timer = setInterval(function(){ swGo(sw.idx+1); }, 3500); }
+function showHome(){
+  setView("view-home");
+  state.path = []; state.idx = null;
+  $("h-brand").textContent = CONFIG.brand || "产品手册";
+  $("h-sub").textContent = CONFIG.brandSub || "";
+  $("foot-text").textContent = CONFIG.foot || "";
+  /* 封面轮播 */
+  var track = "";
+  COVERS.forEach(function(u){ track += '<img loading="lazy" src="'+u+'" alt="封面">'; });
+  $("swiper-track").innerHTML = track;
+  var dots = "";
+  for(var i=0;i<COVERS.length;i++){ dots += '<i'+(i===0?" class=\"on\"":"")+'></i>'; }
+  $("swiper-dots").innerHTML = dots;
+  $("swiper-track").style.transform = "translateX(0)";
+  sw.idx = 0; swStart();
+  $("swiper-track").onclick = function(e){ if(e.target.tagName==="IMG") openLightbox(e.target.src, "封面"); };
+  /* 大类 */
+  var html = "";
+  CATS.forEach(function(c){
+    html += '<div class="cat-card" onclick="location.hash=\'#/'+c.id+'\'">'
+      + '<img loading="lazy" src="'+firstImg(c)+'" alt="'+esc(c.name)+'">'
+      + '<div class="cat-name">'+esc(c.name)+'</div>'
+      + '<div class="cat-count">共'+countItems(c)+'款</div></div>';
+  });
+  $("cat-grid").innerHTML = html;
+  /* 资质 */
+  $("about-img").src = ABOUT || "";
+  $("about-img").onclick = function(){ if(ABOUT) openLightbox(ABOUT, "品牌资质"); };
+  $("back-item").style.display="none";
+}
+function firstImg(node){
+  if(node.cover) return node.cover;
+  if(node.items && node.items[0] && node.items[0].img) return node.items[0].img;
+  if(node.children && node.children[0]) return firstImg(node.children[0]);
+  return "";
+}
+/* ---- 分类页（二级/三级/款式网格，按层级自动判断） ---- */
+function showList(ids){
+  var node = findNode(ids);
+  if(!node) return;
+  state.path = ids; state.idx = null;
+  setView("view-list");
+  $("list-title").textContent = node.name + "（共" + countItems(node) + "款）";
+  $("list-desc").textContent = node.desc || "";
+  $("back-list").style.display = ids.length ? "inline" : "none";
+  $("back-list").onclick = function(){
+    var p = ids.slice(0, -1);
+    location.hash = "#/" + p.join("/");
+  };
+  var html = "";
+  var subs = node.children || [];
+  if(subs.length){
+    /* 有子分类 → 显示下一级分类网格 */
+    subs.forEach(function(ch){
+      html += '<div class="grid-card" onclick="location.hash=\'#/'+ids.concat([ch.id]).join("/")+'\'">'
+        + '<img loading="lazy" src="'+firstImg(ch)+'" alt="'+esc(ch.name)+'">'
+        + '<div class="gc-name">'+esc(ch.name)+'</div>'
+        + '<div class="gc-desc">共'+countItems(ch)+'款</div></div>';
+    });
+  } else {
+    /* 没有子分类 → 直接显示款式 */
+    (node.items||[]).forEach(function(it,i){
+      html += '<div class="grid-card" onclick="location.hash=\'#/'+ids.concat([i]).join("/")+'\'">'
+        + '<img loading="lazy" src="'+it.img+'" alt="'+esc(it.name)+'">'
+        + '<div class="gc-name">'+esc(it.name)+'</div>'
+        + '<div class="gc-desc">'+esc(it.desc)+'</div></div>';
+    });
+  }
+  $("grid").innerHTML = html;
+  $("back-item").style.display="none";
+}
+/* ---- 款式详情 ---- */
+function showItem(ids, idx){
+  var node = findNode(ids);
+  if(!node || !node.items || !node.items[idx]) return;
+  state.path = ids; state.idx = idx;
+  var it = node.items[idx];
+  setView("view-item");
+  $("item-title").textContent = node.name;
+  $("back-item").style.display="inline";
+  $("back-item").onclick = function(){ location.hash = "#/" + ids.join("/"); };
+  $("detail-img").src = it.img;
+  $("detail-img").onclick = function(){ openLightbox(it.img, it.name); };
+  $("detail-name").textContent = it.name;
+  $("detail-desc").textContent = it.desc || "";
+  $("back-list").style.display="none";
+}
+/* ---- 路由 ---- */
+function route(){
+  var h2 = (location.hash || "#/").replace(/^#/, "");
+  var parts = h2.split("/").filter(Boolean);
+  if(parts.length === 0){ showHome(); return; }
+  var last = parts[parts.length-1];
+  if(/^\d+$/.test(last)){
+    var ids = parts.slice(0, -1);
+    var node = findNode(ids);
+    if(node && node.items && node.items[+last]){ showItem(ids, +last); }
+    else { showHome(); }
+  } else {
+    var node2 = findNode(parts);
+    if(node2){ showList(parts); }
+    else { showHome(); }
+  }
+}
+/* ---- 放大弹层（保留长按扫码兼容） ---- */
+var lb = { scale:1, tx:0, ty:0, pinch:0, moving:false };
+function lbApply(){ var img=$("lb-img"); img.style.transition="transform .18s ease"; img.style.transform="translate("+lb.tx+"px,"+lb.ty+"px) scale("+lb.scale+")"; }
+function lbReset(){ lb.scale=1; lb.tx=0; lb.ty=0; lbApply(); }
+function lbZoom(scale,cx,cy){ var img=$("lb-img"); var r=img.getBoundingClientRect(); var pcx=(cx-(r.left+r.width/2))/lb.scale; var pcy=(cy-(r.top+r.height/2))/lb.scale; lb.scale=Math.max(1,Math.min(5,scale)); lb.tx=(cx-r.left-r.width/2)-pcx*lb.scale; lb.ty=(cy-r.top-r.height/2)-pcy*lb.scale; lbApply(); }
+function openLightbox(img,name){ $("lb-img").src=img; $("lb-name").textContent=name||""; $("lightbox").classList.add("show"); lbReset(); }
+function closeLightbox(){ $("lightbox").classList.remove("show"); lbReset(); }
+(function(){
+  var stage=$("lb-stage"), img=$("lb-img");
+  var t0=null, dist0=0, lastScale=1, lastTx=0, lastTy=0;
+  stage.addEventListener("touchstart", function(e){
+    if(e.touches.length===1){ t0={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()}; lastTx=lb.tx; lastTy=lb.ty; lb.moving=false; }
+    else if(e.touches.length===2){ t0=null; var dx=e.touches[0].clientX-e.touches[1].clientX; var dy=e.touches[0].clientY-e.touches[1].clientY; dist0=Math.sqrt(dx*dx+dy*dy); lastScale=lb.scale; lb.pinch=1; img.style.transition="none"; }
+  }, {passive:false});
+  stage.addEventListener("touchmove", function(e){
+    e.preventDefault();
+    if(e.touches.length===2){ var dx=e.touches[0].clientX-e.touches[1].clientX; var dy=e.touches[0].clientY-e.touches[1].clientY; var d=Math.sqrt(dx*dx+dy*dy); if(dist0>0){ var ns=lastScale*(d/dist0); ns=Math.max(1,Math.min(5,ns)); lb.scale=ns; lbApply(); img.style.transition="none"; } lb.pinch=1; }
+    else if(e.touches.length===1){
+      if(lb.pinch){ lb.pinch=0; lastTx=lb.tx; lastTy=lb.ty; t0={x:e.touches[0].clientX,y:e.touches[0].clientY,t:Date.now()}; }
+      if(t0){ var nx=e.touches[0].clientX-t0.x; var ny=e.touches[0].clientY-t0.y; if(Math.abs(nx)>6||Math.abs(ny)>6) lb.moving=true; if(lb.scale>1){ lb.tx=lastTx+nx; lb.ty=lastTy+ny; lbApply(); } }
+    }
+  }, {passive:false});
+  stage.addEventListener("touchend", function(e){
+    if(e.touches.length===0 && t0 && !lb.moving && lb.pinch===0){ if(Date.now()-t0.t<350){ if(lb.scale>1.05){ lbReset(); } else { lbZoom(2.6,t0.x,t0.y); } } }
+    if(e.touches.length===0){ t0=null; lb.pinch=0; }
+  });
+  stage.addEventListener("dblclick", function(e){ if(lb.scale>1.05){ lbReset(); } else { lbZoom(2.6,e.clientX,e.clientY); } });
+})();
+/* ---- 轮播触摸滑动 ---- */
+(function(){
+  var el = $("swiper");
+  el.addEventListener("touchstart", function(e){ sw.startX = e.touches[0].clientX; sw.startT = Date.now(); if(sw.timer) clearInterval(sw.timer); }, {passive:true});
+  el.addEventListener("touchend", function(e){
+    var dx = e.changedTouches[0].clientX - sw.startX;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(e.changedTouches[0].clientY - 0) * 0){
+      /* 水平滑动切换 */
+    }
+    var dy = 0;
+    if(Math.abs(dx) > 40){ if(dx < 0) swGo(sw.idx+1); else swGo(sw.idx-1); }
+    swStart();
+  }, {passive:true});
+})();
+function init(){
+  $("back-list").onclick = function(){ location.hash = "#/"; };
+  $("lb-close").onclick = closeLightbox;
+  $("lb-stage").onclick = function(e){ if(e.target===this || e.target.id==="lb-stage") closeLightbox(); };
+  window.addEventListener("hashchange", route);
+  route();
+}
+init();
+</script>
+</body>
+</html>
