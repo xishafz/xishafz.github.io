@@ -2,597 +2,325 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="format-detection" content="telephone=no">
-<title>运动服产品画册</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>2026秋冬中高端产品手册</title>
 <style>
-  /* ===== 基础变量 ===== */
-  :root{
-    --bg:#F6F4EE;
-    --ink:#1A1B1C;
-    --mut:#6B7280;
-    --card:#FFFFFF;
-    --line:#E4E3DD;
-    --green:#1E3A2F;
-    --green2:#2F6B4F;
-    --orange:#F26B1D;
-    --soft:rgba(30,58,47,0.06);
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{-webkit-text-size-adjust:100%;}
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",Arial,sans-serif;
-    line-height:1.6;
-  }
-  img{max-width:100%;display:block;}
-  a{color:inherit;text-decoration:none;}
-  button{font-family:inherit;cursor:pointer;}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; background:#f4f4f2; color:#222; }
+.view { display:none; }
+.view.active { display:block; }
 
-  .wrap{max-width:760px;margin:0 auto;padding:0 16px 96px;}
+/* 顶部栏 */
+.header { position:sticky; top:0; z-index:100; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:14px 16px; }
+.header h1 { font-size:17px; font-weight:700; letter-spacing:.5px; }
+.header .sub { font-size:12px; color:#888; margin-top:3px; }
+.back-btn { display:none; float:left; margin-right:10px; font-size:15px; line-height:22px; cursor:pointer; color:#333; padding:0 6px; }
 
-  /* ===== 顶栏 ===== */
-  .topbar{
-    position:sticky;top:0;z-index:20;
-    background:var(--green);
-    color:#fff;
-  }
-  .topbar-in{
-    max-width:760px;margin:0 auto;padding:10px 16px;
-    display:flex;align-items:center;gap:12px;
-  }
-  .topbar .brand{font-size:16px;font-weight:700;letter-spacing:1px;}
-  .topbar .brand-sub{font-size:11px;opacity:.75;font-weight:400;margin-left:8px;}
-  .back-btn{
-    display:none;align-items:center;gap:4px;
-    background:rgba(255,255,255,0.14);
-    color:#fff;border:none;border-radius:10px;
-    padding:8px 12px;font-size:13px;min-height:44px;
-  }
-  .back-btn svg{width:16px;height:16px;fill:currentColor;}
+/* 首页封面 */
+.cover-wrap { padding:16px 16px 0; }
+.cover-img { width:100%; border-radius:10px; display:block; cursor:pointer; }
 
-  /* ===== Hero ===== */
-  .hero{
-    position:relative;overflow:hidden;
-    background:var(--green);
-    color:#fff;
-    padding:44px 20px 40px;
-  }
-  .hero-in{max-width:760px;margin:0 auto;position:relative;z-index:2;}
-  .hero .kicker{
-    display:inline-block;
-    font-size:12px;font-weight:600;letter-spacing:2px;
-    color:#F6C8A8;
-    border:1px solid rgba(246,200,168,0.5);
-    border-radius:999px;padding:4px 12px;margin-bottom:18px;
-  }
-  .hero h1{
-    font-size:30px;line-height:1.25;font-weight:900;
-    letter-spacing:1px;
-  }
-  .hero p{
-    margin-top:14px;font-size:14px;color:rgba(255,255,255,0.82);
-    max-width:34em;
-  }
-  .hero .cta-row{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap;}
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    min-height:48px;padding:0 22px;border-radius:12px;
-    font-size:15px;font-weight:600;border:none;
-  }
-  .btn-primary{background:var(--orange);color:#fff;}
-  .btn-ghost{background:rgba(255,255,255,0.14);color:#fff;border:1px solid rgba(255,255,255,0.35);}
-  .btn svg{width:16px;height:16px;fill:currentColor;}
-  /* 球场线装饰（签名元素） */
-  .pitch-lines{
-    position:absolute;right:-60px;bottom:-40px;z-index:1;
-    width:300px;height:220px;opacity:.28;pointer-events:none;
-  }
-  .pitch-lines svg{width:100%;height:100%;}
+/* 分类卡片 */
+.cat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:16px; }
+.cat-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); cursor:pointer; }
+.cat-card img { width:100%; height:110px; object-fit:cover; display:block; }
+.cat-card .cat-name { font-size:14px; font-weight:600; padding:9px 12px 4px; }
+.cat-card .cat-count { font-size:11px; color:#999; padding:0 12px 10px; }
 
-  /* ===== 章节 ===== */
-  .section{padding:30px 0 4px;}
-  .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:16px;}
-  .sec-no{
-    font-size:15px;font-weight:900;color:var(--orange);
-    font-style:italic;letter-spacing:1px;
-  }
-  .sec-title{font-size:19px;font-weight:800;letter-spacing:1px;}
-  .sec-sub{font-size:12px;color:var(--mut);margin-left:auto;}
+/* 二级：分类页商品网格 */
+.series-header { padding:14px 16px 0; }
+.series-header .series-title { font-size:18px; font-weight:700; }
+.series-header .series-desc { font-size:12px; color:#888; margin-top:4px; }
+.item-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:14px 16px 20px; }
+.item-card { background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); cursor:pointer; }
+.item-card img { width:100%; aspect-ratio:2560/1768; object-fit:cover; display:block; }
+.item-card .item-name { font-size:13px; font-weight:600; padding:8px 10px 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.item-card .item-desc { font-size:11px; color:#999; padding:0 10px 9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
-  /* ===== 目录卡片 ===== */
-  .grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
-    gap:14px;
-  }
-  .card{
-    background:var(--card);border-radius:14px;overflow:hidden;
-    border:1px solid var(--line);
-    transition:transform .18s ease, box-shadow .18s ease;
-    position:relative;
-  }
-  .card:active{transform:scale(.98);}
-  .card .thumb{position:relative;}
-  .card .thumb img{width:100%;aspect-ratio:4/3;object-fit:cover;}
-  .jersey-no{
-    position:absolute;top:10px;left:10px;
-    background:var(--orange);color:#fff;
-    font-size:17px;font-weight:900;font-style:italic;
-    min-width:40px;height:40px;border-radius:10px;
-    display:flex;align-items:center;justify-content:center;
-    letter-spacing:.5px;
-  }
-  .card .body{padding:12px 14px 14px;}
-  .card .name{font-size:16px;font-weight:800;}
-  .card .tag{font-size:10px;color:var(--mut);letter-spacing:2px;margin-top:2px;}
-  .card .slogan{font-size:12.5px;color:var(--mut);margin-top:6px;line-height:1.5;}
-  .card .more{
-    display:flex;align-items:center;gap:4px;
-    font-size:13px;font-weight:600;color:var(--green2);
-    margin-top:10px;
-  }
-  .card .more svg{width:14px;height:14px;fill:currentColor;}
+/* 三级：产品大图 */
+.detail-wrap { padding:14px 16px 80px; }
+.detail-img { width:100%; border-radius:10px; display:block; background:#fff; }
+.detail-name { font-size:17px; font-weight:700; margin-top:14px; }
+.detail-desc { font-size:13px; color:#666; margin-top:6px; line-height:1.6; }
+.detail-tip { font-size:12px; color:#999; margin-top:10px; background:#fff; border-radius:8px; padding:10px 12px; }
+.detail-tip b { color:#c0392b; }
 
-  /* ===== 定制流程 ===== */
-  .steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
-  .step{
-    background:var(--card);border:1px solid var(--line);border-radius:14px;
-    padding:16px;
-  }
-  .step .no{
-    font-size:22px;font-weight:900;font-style:italic;color:var(--orange);
-  }
-  .step h3{font-size:15px;font-weight:800;margin-top:8px;}
-  .step p{font-size:12.5px;color:var(--mut);margin-top:6px;}
+/* 资质区 */
+.about-wrap { padding:0 16px 24px; }
+.about-title { font-size:16px; font-weight:700; margin:6px 0 12px; }
+.about-img { width:100%; border-radius:10px; display:block; cursor:pointer; margin-bottom:10px; }
 
-  /* ===== 联系区 ===== */
-  .contact{
-    margin-top:30px;background:var(--soft);
-    border:1px solid var(--line);border-radius:14px;
-    padding:18px 16px;
-  }
-  .contact h3{font-size:16px;font-weight:800;}
-  .contact p{font-size:13px;color:var(--mut);margin-top:6px;}
-  .contact .rows{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
-  .contact .row{
-    display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;
-  }
-  .contact .row svg{width:18px;height:18px;fill:var(--green2);flex:0 0 auto;}
-  .contact .note{font-size:11px;color:var(--mut);margin-top:10px;}
+/* 底部咨询 */
+.footer-bar { position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid #eee; display:flex; padding:8px 12px calc(8px + env(safe-area-inset-bottom)); gap:10px; z-index:100; }
+.footer-bar a { flex:1; text-align:center; padding:11px 0; border-radius:8px; font-size:14px; font-weight:600; text-decoration:none; }
+.btn-call { background:#222; color:#fff; }
+.btn-wechat { background:#07c160; color:#fff; }
+.foot-text { text-align:center; font-size:11px; color:#bbb; padding:14px 0 70px; }
 
-  /* ===== 详情页 ===== */
-  .detail-cover{border-radius:16px;overflow:hidden;border:1px solid var(--line);}
-  .detail-cover img{width:100%;aspect-ratio:4/3;object-fit:cover;}
-  .detail-head{margin-top:18px;}
-  .detail-head .dno{font-size:14px;font-weight:900;color:var(--orange);font-style:italic;letter-spacing:1px;}
-  .detail-head h2{font-size:24px;font-weight:900;margin-top:2px;letter-spacing:1px;}
-  .detail-head .tag{font-size:11px;color:var(--mut);letter-spacing:2px;margin-top:4px;}
-  .detail-head .desc{font-size:14px;color:var(--mut);margin-top:12px;}
-
-  .block{margin-top:26px;}
-  .block-title{
-    font-size:15px;font-weight:800;letter-spacing:1px;
-    display:flex;align-items:center;gap:8px;
-  }
-  .block-title::before{
-    content:"";width:4px;height:16px;border-radius:2px;background:var(--orange);
-  }
-  .points{list-style:none;margin-top:12px;display:flex;flex-direction:column;gap:10px;}
-  .points li{
-    display:flex;gap:10px;align-items:flex-start;
-    font-size:14px;
-  }
-  .points li svg{
-    width:18px;height:18px;fill:var(--green2);flex:0 0 auto;margin-top:3px;
-  }
-  .opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px;}
-  .opt{
-    background:var(--card);border:1px solid var(--line);border-radius:12px;
-    padding:12px;
-  }
-  .opt .o-name{font-size:13.5px;font-weight:700;}
-  .opt .o-desc{font-size:11.5px;color:var(--mut);margin-top:4px;}
-  .detail-cta{margin-top:28px;}
-  .detail-cta .btn{width:100%;}
-
-  /* ===== 底部固定联系条 ===== */
-  .dock{
-    position:fixed;left:0;right:0;bottom:0;z-index:30;
-    background:rgba(255,255,255,0.96);
-    border-top:1px solid var(--line);
-    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-  }
-  .dock-in{max-width:760px;margin:0 auto;display:flex;gap:10px;}
-  .dock .btn{flex:1;min-height:46px;font-size:14px;}
-  .dock .btn-ghost-dock{
-    background:var(--green);color:#fff;
-  }
-
-  /* ===== 视图切换 ===== */
-  .view{display:none;}
-  .view.on{display:block;animation:fade .25s ease;}
-  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-  .foot-note{
-    text-align:center;font-size:11px;color:var(--mut);
-    padding:26px 0 8px;
-  }
-
-  @media (min-width:760px){
-    .hero h1{font-size:38px;}
-    .hero{padding:56px 0 48px;}
-    .hero-in{padding:0 24px;}
-    .grid{grid-template-columns:repeat(3,1fr);}
-  }
+/* 大图弹层 */
+.lightbox { position:fixed; inset:0; background:rgba(0,0,0,.94); z-index:200; display:none; justify-content:center; align-items:center; flex-direction:column; }
+.lightbox.show { display:flex; }
+.lightbox img { max-width:96%; max-height:82vh; border-radius:6px; }
+.lightbox .lb-name { color:#fff; font-size:15px; margin-top:14px; padding:0 20px; text-align:center; }
+.lightbox .lb-close { position:absolute; top:14px; right:18px; color:#fff; font-size:26px; cursor:pointer; padding:6px; }
+.lightbox .lb-tip { color:#aaa; font-size:12px; margin-top:8px; }
 </style>
 </head>
 <body>
 
-<!-- ===== 顶栏 ===== -->
-<header class="topbar">
-  <div class="topbar-in">
-    <button class="back-btn" id="backBtn" type="button" aria-label="返回目录">
-      <svg viewBox="0 0 24 24"><path d="M15.4 4.6 8 12l7.4 7.4 1.4-1.4L10.8 12l6-6z"/></svg>
-      返回目录
-    </button>
-    <div class="brand" id="brandName">运动服产品画册</div>
-    <div class="brand-sub" id="brandSub">团队服 · 定制</div>
+<!-- ================= ① 品牌信息配置（改这里） ================= -->
+<script>
+var CONFIG = {
+  brand: "2026秋冬中高端产品手册",   // 首页大标题
+  brandSub: "犀鲨服饰 · 以极致供应链能力，赋能品牌创造价值",  // 副标题
+  phone: "138-0000-0000",            // 咨询电话（改成你的）
+  phoneLink: "tel:13800000000",      // 拨号链接（改成你的）
+  wechat: "your-wechat-id",          // 微信号（改成你的）
+  foot: "犀鲨服饰 · 产品画册"        // 底部文字
+};
+</script>
+
+<!-- ================= ② 产品数据配置（加图片改这里） ================= -->
+<script>
+/*
+ * 加一款产品：在对应分类的 items 里复制一行
+ * { name:"产品名 #货号", img:"图片地址", desc:"一句话卖点" }
+ * img 可以填：① 直接网址 ② images/xxx.jpg（需先把图片上传到仓库 images 文件夹，文件名用英文）
+ */
+var CATS = [
+  { id:"chongfeng", name:"冲锋衣·三合一", count:"19款", desc:"轻量化冲锋衣 · 三合一两件套 · 防护冲锋衣", cover:"https://aka.doubaocdn.com/s/9trdZTag9T", items:[
+    { name:"轻量化冲锋衣 #250805", img:"https://aka.doubaocdn.com/s/9trdZTag9T", desc:"轻量化硬壳 防水透湿" },
+    { name:"女士短款连帽冲锋衣 #251808", img:"https://aka.doubaocdn.com/s/k68SsvTKGC", desc:"国家二级冲锋衣标准" },
+    { name:"立领一体冲锋衣 #251803", img:"https://aka.doubaocdn.com/s/cESjwmOczP", desc:"静水压10000 火山岩棉袖" },
+    { name:"高太尔防护冲锋衣 #230833", img:"https://aka.doubaocdn.com/s/M9jmGzEgmZ", desc:"CAO7001 TPU透气膜" },
+    { name:"三合一防护两件套 #220801", img:"https://aka.doubaocdn.com/s/pQtUHTxWlx", desc:"摇粒绒内胆 四面弹防风防水" },
+    { name:"三合一软壳两件套 #261809", img:"https://aka.doubaocdn.com/s/HUrVsYMj5P", desc:"T400抓条 静水压5000+" },
+    { name:"三合一暖绒两件套 #261815", img:"https://aka.doubaocdn.com/s/ilC7jF5J5w", desc:"3M新雪丽棉内胆" },
+    { name:"三合一防护两件套 #95588", img:"https://aka.doubaocdn.com/s/LuqtnZQnqd", desc:"300克摇粒绒内胆 可定制" },
+    { name:"三合一防护两件套 #220805", img:"https://aka.doubaocdn.com/s/6BQmBhUSYV", desc:"杜邦三防科技 摇粒内胆" },
+    { name:"三合一防护两件套 #230821", img:"https://aka.doubaocdn.com/s/7zVffIR6L8", desc:"特氟龙三防 320克摇粒内胆" },
+    { name:"三合一防护两件套 #250809A", img:"https://aka.doubaocdn.com/s/6M2jxM7g6y", desc:"3D高弹 全压胶拉链" },
+    { name:"三合一防护两件套 #220807", img:"https://aka.doubaocdn.com/s/GqPnPx6iUf", desc:"银狐绒内胆 四防功能" },
+    { name:"三合一商旅两件套 #250827", img:"https://aka.doubaocdn.com/s/OdbBJRpcZT", desc:"气凝胶科技内胆" },
+    { name:"三合一防护两件套 #250895", img:"https://aka.doubaocdn.com/s/Oa8dniS2l9", desc:"桃皮绒小牛津 320克摇粒" },
+    { name:"三合一防护冲锋衣 #251801", img:"https://aka.doubaocdn.com/s/Vb7befjL07", desc:"静水压10000 国家二级" },
+    { name:"三合一防护冲锋衣 #230831", img:"https://aka.doubaocdn.com/s/QtWRPJhbm7", desc:"高透戈尔压胶 全压胶无缝" },
+    { name:"三合一防护冲锋衣 #95566", img:"https://aka.doubaocdn.com/s/fBrUz6VBUs", desc:"高水压20000mm 全压胶热封" },
+    { name:"三合一防护冲锋衣 #250891", img:"https://aka.doubaocdn.com/s/EQNezM7sv6", desc:"杜邦三防 360g摇粒内胆" },
+    { name:"三合一防护羽绒冲锋衣 #230831Y", img:"https://aka.doubaocdn.com/s/knTJIEqH0B", desc:"90%鸭绒 石墨烯聚热" }
+  ]},
+  { id:"ruanke", name:"软壳衣", count:"7款", desc:"连帽软壳 · 立领商务 · 防护软壳", cover:"https://aka.doubaocdn.com/s/GvpYrYc2UD", items:[
+    { name:"连帽休闲软壳衣 #231001", img:"https://aka.doubaocdn.com/s/GvpYrYc2UD", desc:"小方格摇粒320g 360°防风" },
+    { name:"连帽软壳衣 #261717", img:"https://aka.doubaocdn.com/s/DwUXFgpul2", desc:"三格摇粒 防冷风连帽" },
+    { name:"连帽休闲软壳衣 #251709", img:"https://aka.doubaocdn.com/s/vKqf32KhLX", desc:"三合一复合棉服款 防风保暖" },
+    { name:"立领行政商旅软壳衣 #251711", img:"https://aka.doubaocdn.com/s/49eFzlRTLe", desc:"复合摇粒绒 四防防水" },
+    { name:"连帽户外软壳衣 #251003", img:"https://aka.doubaocdn.com/s/CanxyAnU3G", desc:"小方格摇粒 3D裁剪" },
+    { name:"立领商务软壳衣 #231005", img:"https://aka.doubaocdn.com/s/lrQeMQyP3j", desc:"小方格摇粒 商务利落" },
+    { name:"防护连帽软壳衣 #251716", img:"https://aka.doubaocdn.com/s/autjQQpbwH", desc:"收腰抽绳 显高显瘦" }
+  ]},
+  { id:"fengyi", name:"风衣", count:"9款", desc:"轻弹软壳风衣 · 连帽休闲 · 短款风衣", cover:"https://aka.doubaocdn.com/s/9V9iEPgDFw", items:[
+    { name:"轻弹软壳风衣 #261245", img:"https://aka.doubaocdn.com/s/9V9iEPgDFw", desc:"可调节防风连帽 马蹄袖" },
+    { name:"弹力风衣 #251233", img:"https://aka.doubaocdn.com/s/aNdhFHoq5A", desc:"四面弹 防泼水" },
+    { name:"弹力风衣 #261251", img:"https://aka.doubaocdn.com/s/xepovM8D2D", desc:"凉感面料 舒适弹力" },
+    { name:"轻量化风衣外套 #251105", img:"https://aka.doubaocdn.com/s/a3mwXi3Tvi", desc:"轻量化科技 压胶防风" },
+    { name:"风衣外套 #261241", img:"https://aka.doubaocdn.com/s/QyJ1XXWOgT", desc:"提花格子面料 立体壳帽" },
+    { name:"连帽休闲风衣外套 #251805", img:"https://aka.doubaocdn.com/s/YsZ6J7d3wj", desc:"透气15mm/s 四级防泼水" },
+    { name:"连帽休闲风衣外套 #251101", img:"https://aka.doubaocdn.com/s/nf0TnafQb1", desc:"防水透湿5000+ 三拉链机能" },
+    { name:"户外休闲风衣外套 #250809", img:"https://aka.doubaocdn.com/s/DNvuvcaVrf", desc:"全压胶透湿 四级防泼水" },
+    { name:"短款风衣外套 #251108", img:"https://aka.doubaocdn.com/s/kcnV2EDSo7", desc:"短款宽松廓形 三拉链机能" }
+  ]},
+  { id:"tixu", name:"长袖T恤", count:"5款", desc:"针织 · 亨利领 · 半开衫 · 翻领", cover:"https://aka.doubaocdn.com/s/eBFEGmQ7Px", items:[
+    { name:"针织长袖T恤 #261575", img:"https://aka.doubaocdn.com/s/eBFEGmQ7Px", desc:"Sorona索罗那 7A抗菌" },
+    { name:"亨利领长袖T恤 #261577", img:"https://aka.doubaocdn.com/s/S2EYU4SFgR", desc:"无缝暗扣亨利领 裸感面料" },
+    { name:"半开衫长袖T恤 #2515559", img:"https://aka.doubaocdn.com/s/kwDvHh27jb", desc:"棉感弹力布 半开拉链立领" },
+    { name:"半开衫翻领长袖T恤 #261579", img:"https://aka.doubaocdn.com/s/ylNOaQJGkr", desc:"拼接立领 7A抗菌" },
+    { name:"针织开衫长袖T恤 #261580", img:"https://aka.doubaocdn.com/s/iGWFVLX7FA", desc:"压胶口袋拉链 7A抗菌" }
+  ]},
+  { id:"yurong", name:"羽绒服", count:"7款", desc:"商旅休闲羽绒服 · 三合一羽绒两件套", cover:"https://aka.doubaocdn.com/s/ssJmHijQfR", items:[
+    { name:"商旅休闲羽绒服 #262001", img:"https://aka.doubaocdn.com/s/ssJmHijQfR", desc:"90%白鸭绒 防泼水" },
+    { name:"三合一羽绒两件套 #261907", img:"https://aka.doubaocdn.com/s/M9sPGOaIYt", desc:"90绒内胆 轻盈保暖" },
+    { name:"三合一羽绒两件套 #251905", img:"https://aka.doubaocdn.com/s/IASVCfcqp3", desc:"石墨烯聚热 90%鸭绒" },
+    { name:"三合一羽绒两件套 #250826", img:"https://aka.doubaocdn.com/s/o3bfRLLWQX", desc:"90%白鸭绒 石墨烯发热" },
+    { name:"三合一羽绒两件套 #250829", img:"https://aka.doubaocdn.com/s/8QbzUMrnxe", desc:"90%白鹅绒 石墨烯聚热" },
+    { name:"三合一商旅羽绒两件套 #251903Y", img:"https://aka.doubaocdn.com/s/47KzwMrzdu", desc:"90鸭绒 商务出行" },
+    { name:"三合一商旅羽绒两件套 #250827Y", img:"https://aka.doubaocdn.com/s/GyKt2WkRpq", desc:"90%羽绒无缝内胆" }
+  ]},
+  { id:"mianfu", name:"棉服", count:"3款", desc:"3M新雪丽科技棉服", cover:"https://aka.doubaocdn.com/s/nPmlny6ZWf", items:[
+    { name:"立领一体科技棉服 #252011", img:"https://aka.doubaocdn.com/s/nPmlny6ZWf", desc:"3M新雪丽 轻暖聚热" },
+    { name:"3M新雪丽一体科技棉服 #262007", img:"https://aka.doubaocdn.com/s/Ee1sLBql9V", desc:"高蓬不缩绒 抗菌耐水洗" },
+    { name:"可脱帽一体科技棉服 #252013", img:"https://aka.doubaocdn.com/s/IN58AiQJa5", desc:"3M新雪丽 可脱帽" }
+  ]},
+  { id:"changku", name:"长裤", count:"5款", desc:"休闲四季裤 · 软壳冲锋裤", cover:"https://aka.doubaocdn.com/s/JSVZzmPTkr", items:[
+    { name:"弹力休闲四季裤 #251655", img:"https://aka.doubaocdn.com/s/JSVZzmPTkr", desc:"320D登山呢 免烫抗皱" },
+    { name:"摇粒软壳冲锋裤 #250287", img:"https://aka.doubaocdn.com/s/8tpqGVcwms", desc:"小方格摇粒 防泼水保暖" },
+    { name:"超细绒软壳冲锋裤 #250289", img:"https://aka.doubaocdn.com/s/1ya8KHccNl", desc:"牛奶丝拉绒 防风防泼水" },
+    { name:"软壳冲锋裤 #261619", img:"https://aka.doubaocdn.com/s/VKMoQKwRHh", desc:"牛奶丝复合 四向抗泼水" },
+    { name:"软壳冲锋裤 #261621", img:"https://aka.doubaocdn.com/s/SX8jay05Cb", desc:"四面弹复合 免烫工艺" }
+  ]},
+  { id:"jiake", name:"夹克", count:"2款", desc:"软壳夹克 · 行政商旅夹克", cover:"https://aka.doubaocdn.com/s/r9u8v0nW4S", items:[
+    { name:"轻弹软壳夹克 #261243", img:"https://aka.doubaocdn.com/s/r9u8v0nW4S", desc:"尼龙登山布 吸湿排汗" },
+    { name:"立领行政商旅夹克 #251107", img:"https://aka.doubaocdn.com/s/JaFFvTvw6J", desc:"静水压5000+ 四面弹" }
+  ]},
+  { id:"majia", name:"马甲", count:"2款", desc:"立领软壳马甲 · 科技棉马甲", cover:"https://aka.doubaocdn.com/s/BHGPkU3iVs", items:[
+    { name:"立领软壳马甲 #251707", img:"https://aka.doubaocdn.com/s/BHGPkU3iVs", desc:"四面弹三合一 防泼水防风" },
+    { name:"立领科技棉马甲 #252009", img:"https://aka.doubaocdn.com/s/Orx02d5oI1", desc:"3M新雪丽保暖棉 防泼水" }
+  ]},
+  { id:"zhuarong", name:"抓绒衣", count:"1款", desc:"抓绒开衫外套", cover:"https://aka.doubaocdn.com/s/B9PVNhrpua", items:[
+    { name:"抓绒衣开衫外套 #252101", img:"https://aka.doubaocdn.com/s/B9PVNhrpua", desc:"300克超细摇粒绒 立领保暖" }
+  ]}
+];
+var COVER = "https://aka.doubaocdn.com/s/4hV1n5oZGd";   // 首页封面图（手册封面）
+var ABOUT = "https://aka.doubaocdn.com/s/kUSRSgOVCt";   // 资质展示图（检测报告/专利）
+</script>
+
+<!-- 首页 -->
+<div class="view" id="view-home">
+  <div class="header"><h1 id="h-brand"></h1><div class="sub" id="h-sub"></div></div>
+  <div class="cover-wrap"><img class="cover-img" id="cover-img" alt="封面"></div>
+  <div class="cat-grid" id="cat-grid"></div>
+  <div class="about-wrap">
+    <div class="about-title">品牌资质</div>
+    <img class="about-img" id="about-img" alt="资质">
   </div>
-</header>
-
-<div class="wrap">
-
-  <!-- ===== 视图：首页 ===== -->
-  <div class="view on" id="view-home">
-
-    <section class="hero">
-      <div class="pitch-lines" aria-hidden="true">
-        <svg viewBox="0 0 300 220" fill="none" stroke="#ffffff" stroke-width="2">
-          <path d="M20 110 H280"/>
-          <circle cx="150" cy="110" r="34"/>
-          <path d="M150 76 v-56 M150 144 v56"/>
-          <path d="M20 30 H280 V190 H20 Z"/>
-        </svg>
-      </div>
-      <div class="hero-in">
-        <span class="kicker">FACTORY DIRECT · 工厂直供</span>
-        <h1>运动服 · 团队服<br>定制产品画册</h1>
-        <p>篮球服、足球服、龙舟服、田径服……十大系列，款式齐全。一件起订，支持号码、队名、LOGO 定制，样衣确认后再大货。</p>
-        <div class="cta-row">
-          <a class="btn btn-primary" href="#/albums">浏览全部画册</a>
-          <a class="btn btn-ghost" href="#/how">看定制流程</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="albums">
-      <div class="sec-head">
-        <span class="sec-no">01</span>
-        <h2 class="sec-title">系列画册</h2>
-        <span class="sec-sub" id="albumCount"></span>
-      </div>
-      <div class="grid" id="albumGrid"><!-- 目录卡片由 JS 渲染 --></div>
-    </section>
-
-    <section class="section" id="how">
-      <div class="sec-head">
-        <span class="sec-no">02</span>
-        <h2 class="sec-title">定制流程</h2>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <div class="no">01</div>
-          <h3>发需求</h3>
-          <p>告诉我们要什么款式、颜色、数量，最好附上参考图或队名 LOGO。</p>
-        </div>
-        <div class="step">
-          <div class="no">02</div>
-          <h3>打样确认</h3>
-          <p>出效果图或样衣，确认版型、面料、印字细节，满意再下单。</p>
-        </div>
-        <div class="step">
-          <div class="no">03</div>
-          <h3>大货发货</h3>
-          <p>按确认的样品批量生产，质检后打包发货，全程跟进。</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="contact">
-      <h3>拿不定主意？直接问我们</h3>
-      <p>告诉我们你的队伍和预算，帮你推荐最合适的款式和面料。</p>
-      <div class="rows">
-        <div class="row" id="phoneRow"><!-- JS 填充 --></div>
-        <div class="row" id="wechatRow"><!-- JS 填充 --></div>
-      </div>
-      <div class="note">提示：电话、微信号在页面底部的脚本配置里修改，改完刷新即生效。</div>
-    </section>
-
-    <div class="foot-note" id="footNote"></div>
-  </div>
-
-  <!-- ===== 视图：详情 ===== -->
-  <div class="view" id="view-detail">
-    <div id="detailBody"><!-- 详情由 JS 渲染 --></div>
-  </div>
-
+  <div class="foot-text" id="foot-text"></div>
 </div>
 
-<!-- ===== 底部固定联系条 ===== -->
-<nav class="dock">
-  <div class="dock-in">
-    <a class="btn btn-ghost-dock" id="dockTel" href="tel:13800000000">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>
-      拨打电话
-    </a>
-    <a class="btn btn-primary" id="dockWechat" href="#/contact">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 4C5.4 4 2 6.9 2 10.5c0 2 1 3.7 2.6 4.9l-.7 2.1 2.4-1.2c.7.2 1.4.3 2.2.3h.5c-.1-.5-.2-1-.2-1.6 0-3.3 3-6 6.7-6h.5C15.4 6.3 12.7 4 9.5 4zM7.3 8.7c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9zm4.4 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9zM22 15.5c0-2.9-2.8-5.3-6.2-5.3s-6.2 2.4-6.2 5.3 2.8 5.3 6.2 5.3c.6 0 1.1-.1 1.6-.2l1.8.9-.5-1.6c1.4-.9 2.3-2.3 2.3-3.9zm-8.1-.8c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7zm3.8 0c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7z"/></svg>
-      微信咨询
-    </a>
+<!-- 二级：分类页 -->
+<div class="view" id="view-series">
+  <div class="header"><span class="back-btn" id="back-series">‹ 返回</span><h1 id="series-title"></h1><div class="sub" id="series-desc"></div></div>
+  <div class="item-grid" id="item-grid"></div>
+</div>
+
+<!-- 三级：产品详情 -->
+<div class="view" id="view-item">
+  <div class="header"><span class="back-btn" id="back-item">‹ 返回</span><h1 id="item-title"></h1></div>
+  <div class="detail-wrap">
+    <img class="detail-img" id="detail-img" alt="产品大图">
+    <div class="detail-name" id="detail-name"></div>
+    <div class="detail-desc" id="detail-desc"></div>
+    <div class="detail-tip">图片含完整产品信息（货号 / 卖点 / 面料 / 尺码 / 价格），<b>长按图片保存</b>，或<b>扫图片中的二维码</b>查看详情。</div>
   </div>
-</nav>
+</div>
+
+<!-- 底部咨询栏 -->
+<div class="footer-bar">
+  <a class="btn-call" id="btn-call" href="tel:">电话咨询</a>
+  <a class="btn-wechat" id="btn-wechat" href="#">微信咨询</a>
+</div>
+
+<!-- 大图弹层 -->
+<div class="lightbox" id="lightbox">
+  <span class="lb-close" id="lb-close">✕</span>
+  <img id="lb-img" alt="大图">
+  <div class="lb-name" id="lb-name"></div>
+  <div class="lb-tip">长按图片可保存 · 左右滑动看更多</div>
+</div>
 
 <script>
-(function(){
-  "use strict";
+/* ========== 渲染逻辑（一般不用改） ========== */
+var $ = function(id){ return document.getElementById(id); };
+var state = { cat:null, idx:null };
 
-  /* ============================================================
-   * ① 品牌信息配置 —— 改成你的，全站自动更新
-   * ============================================================ */
-  var CONFIG = {
-    brand: "运动服产品画册",          // 顶栏品牌名
-    brandSub: "团队服 · 定制",        // 顶栏副标题
-    phone: "138-0000-0000",           // 联系电话（显示用）
-    phoneLink: "tel:13800000000",     // 点击拨号（去掉横线）
-    wechat: "微信号：your-wechat-id",  // 微信号显示文字
-    wechatCopy: "your-wechat-id",     // 复制微信号用
-    foot: "XX运动服饰 · 支持印花 / 绣花 / 烫印定制"
-  };
+function showHome(){
+  ["view-home","view-series","view-item"].forEach(function(v){ $(v).classList.remove("active"); });
+  $("view-home").classList.add("active");
+  $("back-series").style.display="none";
+  $("back-item").style.display="none";
+  $("footer-bar") ? null : null;
+  document.querySelector(".footer-bar").style.display="flex";
+  window.scrollTo(0,0);
+}
+function showSeries(catId){
+  var c = CATS.find(function(x){ return x.id===catId; });
+  if(!c) return;
+  state.cat = catId;
+  ["view-home","view-series","view-item"].forEach(function(v){ $(v).classList.remove("active"); });
+  $("view-series").classList.add("active");
+  $("back-series").style.display="inline";
+  $("back-item").style.display="none";
+  document.querySelector(".footer-bar").style.display="flex";
+  $("series-title").textContent = c.name + "（" + c.items.length + "款）";
+  $("series-desc").textContent = c.desc;
+  var html = "";
+  c.items.forEach(function(it,i){
+    html += '<div class="item-card" onclick="showItem('+i+')">'
+      + '<img loading="lazy" src="'+it.img+'" alt="'+it.name+'">'
+      + '<div class="item-name">'+it.name+'</div>'
+      + '<div class="item-desc">'+it.desc+'</div></div>';
+  });
+  $("item-grid").innerHTML = html;
+  window.scrollTo(0,0);
+}
+function showItem(idx){
+  var c = CATS.find(function(x){ return x.id===state.cat; });
+  if(!c || !c.items[idx]) return;
+  state.idx = idx;
+  var it = c.items[idx];
+  ["view-home","view-series","view-item"].forEach(function(v){ $(v).classList.remove("active"); });
+  $("view-item").classList.add("active");
+  $("back-item").style.display="inline";
+  document.querySelector(".footer-bar").style.display="flex";
+  $("item-title").textContent = c.name;
+  $("detail-img").src = it.img;
+  $("detail-name").textContent = it.name;
+  $("detail-desc").textContent = it.desc;
+  window.scrollTo(0,0);
+}
 
-  /* ============================================================
-   * ② 系列数据 —— 加系列就复制一段，改字段即可
-   *    cover 是封面图：默认用示例图；换成你的产品图时，
-   *    把 URL 改成你上传的图片地址即可（也可写 images/xxx.jpg）
-   * ============================================================ */
-  var ALBUMS = [
-    {
-      id: "basketball",
-      no: "01",
-      name: "篮球服系列",
-      tag: "BASKETBALL",
-      slogan: "团队同款配色，号码印字一次到位",
-      desc: "透气网眼面料，出汗不黏身；号码、队名、队徽均可定制，撞色拼接更出效果。适合球队、俱乐部、校园篮球赛。",
-      cover: "https://aka.doubaocdn.com/s/I3IWUbKTrS",
-      points: ["网眼透气面料，比赛出汗不闷", "号码 / 队名 / 队徽可印", "多款撞色拼接可选"],
-      opts: ["颜色自由配", "号码印字", "队名 LOGO", "印花 / 绣花工艺"]
-    },
-    {
-      id: "football",
-      no: "02",
-      name: "足球服系列",
-      tag: "FOOTBALL",
-      slogan: "透气速干，赛场上合身不拖沓",
-      desc: "速干面料配合合身版型，跑动不束缚；胸前队徽、背后号码、短裤侧条都可按队设计。",
-      cover: "https://aka.doubaocdn.com/s/HjD5cpMt35",
-      points: ["速干排汗，高强度不掉链", "合身剪裁，跑动不拖沓", "主客场配色方案可定制"],
-      opts: ["颜色自由配", "号码印字", "队名 LOGO", "印花 / 绣花工艺"]
-    },
-    {
-      id: "dragonboat",
-      no: "03",
-      name: "龙舟服系列",
-      tag: "DRAGON BOAT",
-      slogan: "鲜艳配色，速干耐磨，浆手同款",
-      desc: "红黄撞色醒目大方，速干面料适合水上高强度训练；可按队伍定制队名和龙纹图案。",
-      cover: "https://aka.doubaocdn.com/s/f5osyM7P5Q",
-      points: ["鲜艳配色，岸上水中都醒目", "速干耐磨，训练耐用", "队名 + 龙纹图案可定制"],
-      opts: ["颜色自由配", "队名印字", "队徽图案", "印花 / 绣花工艺"]
-    },
-    {
-      id: "athletics",
-      no: "04",
-      name: "田径服系列",
-      tag: "ATHLETICS",
-      slogan: "轻量背心短裤，跑跳无负担",
-      desc: "轻量面料，剪裁贴身不勒；荧光配色夜间训练更安全，适合田径队、校运会方阵。",
-      cover: "https://aka.doubaocdn.com/s/MgCuHCJgPP",
-      points: ["轻量面料，跑跳无负担", "贴身剪裁不勒身", "荧光配色，夜间更醒目"],
-      opts: ["颜色自由配", "号码印字", "单位 LOGO", "数码印花工艺"]
-    },
-    {
-      id: "racket",
-      no: "05",
-      name: "乒羽网球服系列",
-      tag: "RACKET SPORTS",
-      slogan: "polo 领型更精神，吸湿排汗",
-      desc: "polo 领型干练精神，吸湿排汗面料贴身舒适；适合乒乓球、羽毛球、网球俱乐部和赛事队服。",
-      cover: "https://aka.doubaocdn.com/s/mvTp66L0js",
-      points: ["polo 领型，上场更精神", "吸湿排汗，贴身舒适", "拼接设计，款式耐看"],
-      opts: ["颜色自由配", "队名印字", "俱乐部 LOGO", "绣花工艺"]
-    },
-    {
-      id: "running",
-      no: "06",
-      name: "健跑服系列",
-      tag: "RUNNING",
-      slogan: "日常夜跑通勤两相宜",
-      desc: "简洁版型速干面料，日常穿也好看；适合跑团、企业运动会、健步走活动。",
-      cover: "https://aka.doubaocdn.com/s/6Ler7YFKUq",
-      points: ["速干透气，出汗不粘身", "版型日常，通勤也能穿", "跑团 / 活动统一形象"],
-      opts: ["颜色自由配", "活动主题印字", "跑团 LOGO", "印花工艺"]
-    },
-    {
-      id: "pants",
-      no: "07",
-      name: "运动裤系列",
-      tag: "PANTS",
-      slogan: "束脚版型，松紧腰头，训练日常都舒服",
-      desc: "束脚版型利落不拖沓，松紧腰头带抽绳，怎么动都舒服；配队服上衣或单穿都合适。",
-      cover: "https://aka.doubaocdn.com/s/XaHPTYRImB",
-      points: ["束脚版型，活动利落", "松紧腰 + 抽绳，穿着舒服", "多色可选，可搭整套"],
-      opts: ["颜色自由配", "裤侧印字", "队名 LOGO", "印花工艺"]
-    },
-    {
-      id: "suits",
-      no: "08",
-      name: "运动套装系列",
-      tag: "TRACKSUITS",
-      slogan: "假两件设计，一套出门",
-      desc: "上衣下裤成套设计，假两件层次感强；秋冬款可做抓绒内里，适合团队出行、开闭幕式。",
-      cover: "https://aka.doubaocdn.com/s/UWkVhwjESf",
-      points: ["成套设计，一套出门", "假两件版型，层次感强", "秋冬可加绒内里"],
-      opts: ["颜色自由配", "胸前印字", "队名 LOGO", "绣花 / 印花工艺"]
-    },
-    {
-      id: "cheer",
-      no: "09",
-      name: "啦啦队服系列",
-      tag: "CHEERLEADING",
-      slogan: "短上衣 + 百褶裙，活力配色",
-      desc: "亮眼配色、轻盈裙摆，跳舞动作不受限；可为队伍定制专属配色和图案。",
-      cover: "https://aka.doubaocdn.com/s/ydbcJEassf",
-      points: ["轻盈面料，动作不受限", "百褶裙摆，动感好看", "队伍专属配色可定制"],
-      opts: ["颜色自由配", "队名印字", "专属图案", "印花 / 绣花工艺"]
-    },
-    {
-      id: "gkreff",
-      no: "10",
-      name: "门将裁判服系列",
-      tag: "GK & REFEREE",
-      slogan: "亮色区分度高，护具友好版型",
-      desc: "门将服亮色区分度高，加厚护肘部位耐磨；裁判服黑白分明，职业感强，均可定制。",
-      cover: "https://aka.doubaocdn.com/s/oqYPjOI2tB",
-      points: ["亮色设计，场上好区分", "护肘加厚，耐磨耐摔", "裁判服黑白分明更专业"],
-      opts: ["颜色自由配", "号码印字", "队名 / 协会 LOGO", "印花工艺"]
-    }
-  ];
+function openLightbox(img, name){
+  $("lb-img").src = img;
+  $("lb-name").textContent = name;
+  $("lightbox").classList.add("show");
+}
+function closeLightbox(){ $("lightbox").classList.remove("show"); }
 
-  /* ============================================================
-   * ③ 渲染逻辑（一般不用改）
-   * ============================================================ */
-  var $ = function(id){ return document.getElementById(id); };
-
-  function buildHome(){
-    var grid = $("albumGrid");
-    var html = "";
-    for (var i = 0; i < ALBUMS.length; i++){
-      var a = ALBUMS[i];
-      html +=
-        '<a class="card" href="#/' + a.id + '">' +
-          '<div class="thumb">' +
-            '<img src="' + a.cover + '" alt="' + a.name + '" loading="lazy">' +
-            '<span class="jersey-no">' + a.no + '</span>' +
-          '</div>' +
-          '<div class="body">' +
-            '<div class="name">' + a.name + '</div>' +
-            '<div class="tag">' + a.tag + '</div>' +
-            '<div class="slogan">' + a.slogan + '</div>' +
-            '<div class="more">查看系列' +
-              '<svg viewBox="0 0 24 24"><path d="M8.6 4.6 16 12l-7.4 7.4-1.4-1.4L13.2 12 7.2 6z"/></svg>' +
-            '</div>' +
-          '</div>' +
-        '</a>';
-    }
-    grid.innerHTML = html;
-    $("albumCount").textContent = ALBUMS.length + " 个系列";
-  }
-
-  function buildDetail(id){
-    var a = null;
-    for (var i = 0; i < ALBUMS.length; i++){
-      if (ALBUMS[i].id === id){ a = ALBUMS[i]; break; }
-    }
-    if (!a){ location.hash = "#/"; return; }
-
-    var pts = "";
-    for (var j = 0; j < a.points.length; j++){
-      pts +=
-        '<li>' +
-          '<svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>' +
-          '<span>' + a.points[j] + '</span>' +
-        '</li>';
-    }
-    var ots = "";
-    for (var k = 0; k < a.opts.length; k++){
-      ots +=
-        '<div class="opt"><div class="o-name">' + a.opts[k] + '</div><div class="o-desc">下单时说明即可</div></div>';
-    }
-
-    $("detailBody").innerHTML =
-      '<div class="detail-cover"><img src="' + a.cover + '" alt="' + a.name + '"></div>' +
-      '<div class="detail-head">' +
-        '<div class="dno">系列 ' + a.no + ' · ' + a.tag + '</div>' +
-        '<h2>' + a.name + '</h2>' +
-        '<div class="desc">' + a.desc + '</div>' +
-      '</div>' +
-      '<div class="block">' +
-        '<div class="block-title">系列特点</div>' +
-        '<ul class="points">' + pts + '</ul>' +
-      '</div>' +
-      '<div class="block">' +
-        '<div class="block-title">支持定制</div>' +
-        '<div class="opts">' + ots + '</div>' +
-      '</div>' +
-      '<div class="detail-cta">' +
-        '<a class="btn btn-primary" href="#/contact">咨询这个系列</a>' +
-      '</div>';
-  }
-
-  function router(){
-    var hash = location.hash || "#/";
-    var home = $("view-home");
-    var detail = $("view-detail");
-    var back = $("backBtn");
-    var m = hash.match(/^#\/([a-z0-9]+)$/);
-    var anchorId = null;
-    if (m && (m[1] === "albums" || m[1] === "how" || m[1] === "contact")){
-      anchorId = m[1];
-      m = null;
-    }
-    if (m){
-      buildDetail(m[1]);
-      home.classList.remove("on");
-      detail.classList.add("on");
-      back.style.display = "inline-flex";
+function route(){
+  var h = location.hash || "#/";
+  var parts = h.replace(/^#\//,"").split("/");
+  if(parts[0] && CATS.find(function(x){return x.id===parts[0];})){
+    if(parts[1] !== undefined){
+      state.cat = parts[0];
+      showItem(parseInt(parts[1],10));
     } else {
-      detail.classList.remove("on");
-      home.classList.add("on");
-      back.style.display = "none";
+      showSeries(parts[0]);
     }
-    if (anchorId){
-      var el = anchorId === "contact" ? document.querySelector(".contact") : $(anchorId);
-      if (el){
-        var top = el.getBoundingClientRect().top + window.scrollY - 70;
-        window.scrollTo(0, top);
-      } else {
-        window.scrollTo(0, 0);
-      }
-    } else {
-      window.scrollTo(0, 0);
-    }
+  } else {
+    showHome();
   }
+}
 
-  function fillConfig(){
-    $("brandName").textContent = CONFIG.brand;
-    $("brandSub").textContent = CONFIG.brandSub;
-    $("phoneRow").innerHTML =
-      '<svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></svg>' +
-      '<span>' + CONFIG.phone + '</span>';
-    $("wechatRow").innerHTML =
-      '<svg viewBox="0 0 24 24"><path d="M9.5 4C5.4 4 2 6.9 2 10.5c0 2 1 3.7 2.6 4.9l-.7 2.1 2.4-1.2c.7.2 1.4.3 2.2.3h.5c-.1-.5-.2-1-.2-1.6 0-3.3 3-6 6.7-6h.5C15.4 6.3 12.7 4 9.5 4zM7.3 8.7c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9zm4.4 0c-.5 0-.9-.4-.9-.9s.4-.9.9-.9.9.4.9.9-.4.9-.9.9zM22 15.5c0-2.9-2.8-5.3-6.2-5.3s-6.2 2.4-6.2 5.3 2.8 5.3 6.2 5.3c.6 0 1.1-.1 1.6-.2l1.8.9-.5-1.6c1.4-.9 2.3-2.3 2.3-3.9zm-8.1-.8c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7zm3.8 0c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7z"/></svg>' +
-      '<span>' + CONFIG.wechat + '</span>';
-    $("dockTel").href = CONFIG.phoneLink;
-    $("footNote").textContent = CONFIG.foot;
-    document.title = CONFIG.brand;
-  }
+function init(){
+  $("h-brand").textContent = CONFIG.brand;
+  $("h-sub").textContent = CONFIG.brandSub;
+  $("foot-text").textContent = CONFIG.foot;
+  $("btn-call").href = CONFIG.phoneLink;
+  $("btn-call").textContent = "电话 " + CONFIG.phone;
+  $("btn-wechat").textContent = "微信 " + CONFIG.wechat;
+  $("btn-wechat").href = "weixin://";
 
-  $("backBtn").addEventListener("click", function(){ location.hash = "#/"; });
-  window.addEventListener("hashchange", router);
+  $("cover-img").src = COVER;
+  $("cover-img").onclick = function(){ openLightbox(COVER, CONFIG.brand); };
+  $("about-img").src = ABOUT;
+  $("about-img").onclick = function(){ openLightbox(ABOUT, "品牌资质"); };
 
-  fillConfig();
-  buildHome();
-  router();
-})();
+  var html = "";
+  CATS.forEach(function(c){
+    html += '<div class="cat-card" onclick="location.hash=\'#/'+c.id+'\'">'
+      + '<img loading="lazy" src="'+c.cover+'" alt="'+c.name+'">'
+      + '<div class="cat-name">'+c.name+'</div>'
+      + '<div class="cat-count">'+c.count+'</div></div>';
+  });
+  $("cat-grid").innerHTML = html;
+
+  $("back-series").onclick = function(){ location.hash = "#/"; };
+  $("back-item").onclick = function(){ location.hash = "#/"+state.cat; };
+  $("lb-close").onclick = closeLightbox;
+  $("lightbox").onclick = function(e){ if(e.target===this) closeLightbox(); };
+
+  window.addEventListener("hashchange", route);
+  route();
+}
+init();
 </script>
 </body>
 </html>
