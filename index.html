@@ -38,7 +38,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 .item-card .item-desc { font-size:11px; color:#999; padding:0 10px 9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 /* 三级：产品大图 */
-.detail-wrap { padding:14px 16px 80px; }
+.detail-wrap { padding:14px 16px 24px; }
 .detail-img { width:100%; border-radius:10px; display:block; background:#fff; }
 .detail-name { font-size:17px; font-weight:700; margin-top:14px; }
 .detail-desc { font-size:13px; color:#666; margin-top:6px; line-height:1.6; }
@@ -50,12 +50,8 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 .about-title { font-size:16px; font-weight:700; margin:6px 0 12px; }
 .about-img { width:100%; border-radius:10px; display:block; cursor:pointer; margin-bottom:10px; }
 
-/* 底部咨询 */
-.footer-bar { position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid #eee; display:flex; padding:8px 12px calc(8px + env(safe-area-inset-bottom)); gap:10px; z-index:100; }
-.footer-bar a { flex:1; text-align:center; padding:11px 0; border-radius:8px; font-size:14px; font-weight:600; text-decoration:none; }
-.btn-call { background:#222; color:#fff; }
-.btn-wechat { background:#07c160; color:#fff; }
-.foot-text { text-align:center; font-size:11px; color:#bbb; padding:14px 0 70px; }
+/* 底部版权 */
+.foot-text { text-align:center; font-size:11px; color:#bbb; padding:14px 0 24px; }
 
 /* 大图弹层（支持缩放） */
 .lightbox { position:fixed; inset:0; background:rgba(0,0,0,.96); z-index:200; display:none; justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
@@ -73,11 +69,8 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 <script>
 var CONFIG = {
   brand: "2026秋冬中高端产品手册",   // 首页大标题
-  brandSub: "犀鲨服饰 · 以极致供应链能力，赋能品牌创造价值",  // 副标题
-  phone: "138-0000-0000",            // 咨询电话（改成你的）
-  phoneLink: "tel:13800000000",      // 拨号链接（改成你的）
-  wechat: "your-wechat-id",          // 微信号（改成你的）
-  foot: "犀鲨服饰 · 产品画册"        // 底部文字
+  brandSub: "以极致供应链能力，赋能品牌创造价值",  // 副标题
+  foot: "2026秋冬中高端产品手册"      // 底部文字
 };
 </script>
 
@@ -203,11 +196,6 @@ var ABOUT = "https://aka.doubaocdn.com/s/kUSRSgOVCt";   // 资质展示图（检
   </div>
 </div>
 
-<!-- 底部咨询栏 -->
-<div class="footer-bar">
-  <a class="btn-call" id="btn-call" href="tel:">电话咨询</a>
-  <a class="btn-wechat" id="btn-wechat" href="#">微信咨询</a>
-</div>
 
 <!-- 大图弹层 -->
 <div class="lightbox" id="lightbox">
@@ -229,8 +217,6 @@ function showHome(){
   $("view-home").classList.add("active");
   $("back-series").style.display="none";
   $("back-item").style.display="none";
-  $("footer-bar") ? null : null;
-  document.querySelector(".footer-bar").style.display="flex";
   window.scrollTo(0,0);
 }
 function showSeries(catId){
@@ -241,7 +227,6 @@ function showSeries(catId){
   $("view-series").classList.add("active");
   $("back-series").style.display="inline";
   $("back-item").style.display="none";
-  document.querySelector(".footer-bar").style.display="flex";
   $("series-title").textContent = c.name + "（" + c.items.length + "款）";
   $("series-desc").textContent = c.desc;
   var html = "";
@@ -262,7 +247,6 @@ function showItem(idx){
   ["view-home","view-series","view-item"].forEach(function(v){ $(v).classList.remove("active"); });
   $("view-item").classList.add("active");
   $("back-item").style.display="inline";
-  document.querySelector(".footer-bar").style.display="flex";
   $("item-title").textContent = c.name;
   $("detail-img").src = it.img;
   $("detail-img").onclick = function(){ openLightbox(it.img, it.name); };
@@ -305,7 +289,6 @@ function closeLightbox(){ $("lightbox").classList.remove("show"); lbReset(); }
   var t0 = null, dist0 = 0, lastScale = 1, lastTx = 0, lastTy = 0;
 
   stage.addEventListener("touchstart", function(e){
-    e.preventDefault();
     if(e.touches.length === 1){
       t0 = { x:e.touches[0].clientX, y:e.touches[0].clientY, t:Date.now() };
       lastTx = lb.tx; lastTy = lb.ty; lb.moving = false;
@@ -385,11 +368,6 @@ function init(){
   $("h-brand").textContent = CONFIG.brand;
   $("h-sub").textContent = CONFIG.brandSub;
   $("foot-text").textContent = CONFIG.foot;
-  $("btn-call").href = CONFIG.phoneLink;
-  $("btn-call").textContent = "电话 " + CONFIG.phone;
-  $("btn-wechat").textContent = "微信 " + CONFIG.wechat;
-  $("btn-wechat").href = "weixin://";
-
   $("cover-img").src = COVER;
   $("cover-img").onclick = function(){ openLightbox(COVER, CONFIG.brand); };
   $("about-img").src = ABOUT;
