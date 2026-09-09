@@ -33,6 +33,8 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 /* 首页 */
 .all-entry { margin:14px 16px 0; padding:12px 14px; background:#1f2328; color:#fff; border-radius:10px; font-size:14px; font-weight:600; text-align:center; cursor:pointer; letter-spacing:1px; }
 .all-entry:hover { background:#2c3138; }
+.fav-entry { margin:10px 16px 0; padding:11px 14px; background:#fff; color:#e8590c; border:1px solid #f0d9c8; border-radius:10px; font-size:14px; font-weight:600; text-align:center; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; }
+.fav-entry .fav-num { font-size:12px; color:#b07a4f; font-weight:400; }
 .cat-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; padding:16px; }
 .cat-card { background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); cursor:pointer; }
 .cat-card img { width:100%; height:110px; object-fit:cover; display:block; }
@@ -51,6 +53,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 .grid-card img { width:100%; aspect-ratio:2560/1768; object-fit:cover; display:block; }
 .grid-card .gc-name { font-size:13px; font-weight:600; padding:8px 10px 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .grid-card .gc-desc { font-size:11px; color:#999; padding:0 10px 9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.grid-card .gc-fabric { font-size:11px; color:#999; padding:0 10px 9px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 /* 搜索框 */
 .search-wrap { padding:10px 16px 0; position:relative; }
 .search-box { width:100%; box-sizing:border-box; padding:9px 12px; border:1px solid #e3e3e0; border-radius:8px; font-size:14px; background:#fff; outline:none; }
@@ -104,6 +107,32 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 #view-all { position:fixed; inset:0; background:#f4f4f2; z-index:89; display:none; flex-direction:column; }
 #view-all.active { display:flex; }
 #view-all .header { flex:none; }
+/* 收藏夹 */
+#view-fav { position:fixed; inset:0; background:#f4f4f2; z-index:89; display:none; flex-direction:column; }
+#view-fav.active { display:flex; }
+#view-fav .header { flex:none; }
+#view-fav .grid { padding-top:14px; }
+.fav-empty { padding:50px 20px; text-align:center; color:#999; font-size:14px; line-height:2; }
+.fav-empty .auth-btn { display:inline-block; margin-top:8px; }
+/* 详情页收藏按钮 */
+.fav-btn { position:absolute; top:10px; right:10px; z-index:9; width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 6px rgba(0,0,0,.18); }
+.fav-btn svg { display:block; }
+/* 登录弹窗 */
+.auth-mask { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; display:none; align-items:center; justify-content:center; padding:24px; }
+.auth-box { position:relative; background:#fff; border-radius:14px; width:100%; max-width:340px; padding:22px 22px 16px; box-shadow:0 10px 40px rgba(0,0,0,.2); }
+.auth-close { position:absolute; top:10px; right:14px; font-size:18px; color:#aaa; cursor:pointer; }
+.auth-box h3 { font-size:17px; text-align:center; }
+.auth-sub { font-size:12px; color:#999; text-align:center; margin:6px 0 16px; }
+.auth-input { width:100%; padding:10px 12px; border:1px solid #e0e0dd; border-radius:8px; font-size:14px; margin-bottom:10px; outline:none; }
+.auth-input:focus { border-color:#e8590c; }
+.auth-err { font-size:12px; color:#d64541; min-height:16px; margin-bottom:6px; }
+.auth-btn { width:100%; padding:11px 0; border:none; border-radius:8px; background:#e8590c; color:#fff; font-size:15px; font-weight:600; cursor:pointer; }
+.auth-btn:disabled { opacity:.5; }
+.auth-switch { text-align:center; font-size:13px; color:#e8590c; margin-top:12px; cursor:pointer; }
+.auth-tip { text-align:center; font-size:11px; color:#bbb; margin-top:8px; }
+/* 收藏提示 */
+.fav-tip { position:fixed; left:50%; bottom:90px; transform:translateX(-50%); background:rgba(0,0,0,.75); color:#fff; padding:8px 16px; border-radius:18px; font-size:13px; z-index:300; opacity:0; transition:opacity .2s; pointer-events:none; white-space:nowrap; }
+.fav-tip.show { opacity:1; }
 .nav-body { flex:1; display:flex; min-height:0; }
 .nav-side { width:92px; flex:none; background:#f7f7f5; overflow-y:auto; padding:8px 0; -webkit-overflow-scrolling:touch; }
 .nav-side .ns-item { display:flex; align-items:center; gap:4px; padding:11px 10px; font-size:13px; color:#333; cursor:pointer; border-left:3px solid transparent; line-height:1.35; }
@@ -121,6 +150,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 .n-name { font-size:14px; font-weight:600; line-height:1.35; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 .n-no { font-size:12px; color:#e8590c; margin-top:4px; }
 .n-desc { font-size:12px; color:#888; margin-top:4px; line-height:1.4; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.n-fabric { font-size:12px; color:#888; margin-top:4px; line-height:1.4; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
 .nav-empty { text-align:center; color:#999; font-size:13px; padding:40px 0; }
 /* 详情多图（瀑布流全部显示） */
 .detail-wrap { padding:14px 16px 24px; }
@@ -151,7 +181,7 @@ var _hmt = _hmt || [];
 </head>
 <body>
 <script>
-var DATA = {"config":{"brand":"2026秋冬中高端产品手册","brandSub":"以极致供应链能力，赋能品牌创造价值","foot":"2026秋冬中高端产品手册","contact":{"phone":"","wechat":"","qr":""},"stat":"<script>\nvar _hmt = _hmt || [];\n(function() {\n  var hm = document.createElement(\"script\");\n  hm.src = \"https://hm.baidu.com/hm.js?483f1365fd28de691049b1db59ceec81\";\n  var s = document.getElementsByTagName(\"script\")[0];\n  s.parentNode.insertBefore(hm, s);\n})();\n<\/script>"},"about":{"title":"品牌资质","text":"","img":"https://aka.doubaocdn.com/s/kUSRSgOVCt"},"cats":[{"id":"chongfeng","name":"冲锋衣","count":"19款","desc":"轻量化冲锋衣 · 三合一两件套 · 防护冲锋衣2","cover":"https://aka.doubaocdn.com/s/9trdZTag9T","items":[{"name":"女士短款连帽冲锋衣 #251808","desc":"国家二级冲锋衣标准","imgs":["https://aka.doubaocdn.com/s/k68SsvTKGC"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"立领一体冲锋衣 #251803","desc":"静水压10000 火山岩棉袖","imgs":["https://aka.doubaocdn.com/s/cESjwmOczP"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"高太尔防护冲锋衣 #230833","desc":"CAO7001 TPU透气膜","imgs":["https://aka.doubaocdn.com/s/M9jmGzEgmZ"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护两件套 #220801","desc":"摇粒绒内胆 四面弹防风防水","imgs":["https://aka.doubaocdn.com/s/pQtUHTxWlx"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一软壳两件套 #261809","desc":"T400抓条 静水压5000+","imgs":["https://aka.doubaocdn.com/s/HUrVsYMj5P"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一暖绒两件套 #261815","desc":"3M新雪丽棉内胆","imgs":["https://aka.doubaocdn.com/s/ilC7jF5J5w"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护两件套 #95588","desc":"300克摇粒绒内胆 可定制","imgs":["https://aka.doubaocdn.com/s/LuqtnZQnqd"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护两件套 #220805","desc":"杜邦三防科技 摇粒内胆","imgs":["https://aka.doubaocdn.com/s/6BQmBhUSYV"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护两件套 #230821","desc":"特氟龙三防 320克摇粒内胆","imgs":["https://aka.doubaocdn.com/s/7zVffIR6L8"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护两件套 #250809A","desc":"3D高弹 全压胶拉链","imgs":["https://aka.doubaocdn.com/s/6M2jxM7g6y"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护两件套 #220807","desc":"银狐绒内胆 四防功能","imgs":["https://aka.doubaocdn.com/s/GqPnPx6iUf"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一商旅两件套 #250827","desc":"气凝胶科技内胆","imgs":["https://aka.doubaocdn.com/s/OdbBJRpcZT"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护两件套 #250895","desc":"桃皮绒小牛津 320克摇粒","imgs":["https://aka.doubaocdn.com/s/Oa8dniS2l9"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护冲锋衣 #251801","desc":"静水压10000 国家二级","imgs":["https://aka.doubaocdn.com/s/Vb7befjL07"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护冲锋衣 #230831","desc":"高透戈尔压胶 全压胶无缝","imgs":["https://aka.doubaocdn.com/s/QtWRPJhbm7"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护冲锋衣 #95566","desc":"高水压20000mm 全压胶热封","imgs":["https://aka.doubaocdn.com/s/fBrUz6VBUs"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护冲锋衣 #250891","desc":"杜邦三防 360g摇粒内胆","imgs":["https://aka.doubaocdn.com/s/EQNezM7sv6"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一防护羽绒冲锋衣 #230831Y","desc":"90%鸭绒 石墨烯聚热","imgs":["https://aka.doubaocdn.com/s/knTJIEqH0B"],"points":["","",""],"detailBlocks":[],"cat":""}],"children":[{"id":"sub1","name":"三合一","desc":"","cover":"","children":[],"items":[{"name":"轻量化冲锋衣 #250805","desc":"70D高密 全热封压胶 抗静电","imgs":["https://aka.doubaocdn.com/s/9trdZTag9T"],"points":["","",""],"detailBlocks":[],"cat":"","fabric":"面层100%锦纶，里层100%聚酯纤维"}]}]},{"id":"ruanke","name":"软壳衣","count":"7款","desc":"连帽软壳 · 立领商务 · 防护软壳","cover":"https://aka.doubaocdn.com/s/GvpYrYc2UD","items":[{"name":"连帽休闲软壳衣 #231001","desc":"小方格摇粒320g 360°防风","imgs":["https://aka.doubaocdn.com/s/GvpYrYc2UD"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"连帽软壳衣 #261717","desc":"三格摇粒 防冷风连帽","imgs":["https://aka.doubaocdn.com/s/DwUXFgpul2"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"连帽休闲软壳衣 #251709","desc":"三合一复合棉服款 防风保暖","imgs":["https://aka.doubaocdn.com/s/vKqf32KhLX"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"立领行政商旅软壳衣 #251711","desc":"复合摇粒绒 四防防水","imgs":["https://aka.doubaocdn.com/s/49eFzlRTLe"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"连帽户外软壳衣 #251003","desc":"小方格摇粒 3D裁剪","imgs":["https://aka.doubaocdn.com/s/CanxyAnU3G"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"立领商务软壳衣 #231005","desc":"小方格摇粒 商务利落","imgs":["https://aka.doubaocdn.com/s/lrQeMQyP3j"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"防护连帽软壳衣 #251716","desc":"收腰抽绳 显高显瘦","imgs":["https://aka.doubaocdn.com/s/autjQQpbwH"],"points":["","",""],"detailBlocks":[],"cat":""}],"children":[]},{"id":"fengyi","name":"风衣","count":"9款","desc":"轻弹软壳风衣 · 连帽休闲 · 短款风衣","cover":"https://aka.doubaocdn.com/s/9V9iEPgDFw","items":[{"name":"轻弹软壳风衣 #261245","desc":"可调节防风连帽 马蹄袖","imgs":["https://aka.doubaocdn.com/s/9V9iEPgDFw"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"弹力风衣 #251233","desc":"四面弹 防泼水","imgs":["https://aka.doubaocdn.com/s/aNdhFHoq5A"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"弹力风衣 #261251","desc":"凉感面料 舒适弹力","imgs":["https://aka.doubaocdn.com/s/xepovM8D2D"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"轻量化风衣外套 #251105","desc":"轻量化科技 压胶防风","imgs":["https://aka.doubaocdn.com/s/a3mwXi3Tvi"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"风衣外套 #261241","desc":"提花格子面料 立体壳帽","imgs":["https://aka.doubaocdn.com/s/QyJ1XXWOgT"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"连帽休闲风衣外套 #251805","desc":"透气15mm/s 四级防泼水","imgs":["https://aka.doubaocdn.com/s/YsZ6J7d3wj"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"连帽休闲风衣外套 #251101","desc":"防水透湿5000+ 三拉链机能","imgs":["https://aka.doubaocdn.com/s/nf0TnafQb1"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"户外休闲风衣外套 #250809","desc":"全压胶透湿 四级防泼水","imgs":["https://aka.doubaocdn.com/s/DNvuvcaVrf"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"短款风衣外套 #251108","desc":"短款宽松廓形 三拉链机能","imgs":["https://aka.doubaocdn.com/s/kcnV2EDSo7"],"points":["","",""],"detailBlocks":[],"cat":""}]},{"id":"tixu","name":"长袖T恤","count":"5款","desc":"针织 · 亨利领 · 半开衫 · 翻领","cover":"https://aka.doubaocdn.com/s/eBFEGmQ7Px","items":[{"name":"针织长袖T恤 #261575","desc":"Sorona索罗那 7A抗菌","imgs":["https://aka.doubaocdn.com/s/eBFEGmQ7Px"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"亨利领长袖T恤 #261577","desc":"无缝暗扣亨利领 裸感面料","imgs":["https://aka.doubaocdn.com/s/S2EYU4SFgR"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"半开衫长袖T恤 #2515559","desc":"棉感弹力布 半开拉链立领","imgs":["https://aka.doubaocdn.com/s/kwDvHh27jb"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"半开衫翻领长袖T恤 #261579","desc":"拼接立领 7A抗菌","imgs":["https://aka.doubaocdn.com/s/ylNOaQJGkr"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"针织开衫长袖T恤 #261580","desc":"压胶口袋拉链 7A抗菌","imgs":["https://aka.doubaocdn.com/s/iGWFVLX7FA"],"points":["","",""],"detailBlocks":[],"cat":""}]},{"id":"yurong","name":"羽绒服","count":"7款","desc":"商旅休闲羽绒服 · 三合一羽绒两件套","cover":"https://aka.doubaocdn.com/s/ssJmHijQfR","items":[{"name":"商旅休闲羽绒服 #262001","desc":"90%白鸭绒 防泼水","imgs":["https://aka.doubaocdn.com/s/ssJmHijQfR"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一羽绒两件套 #261907","desc":"90绒内胆 轻盈保暖","imgs":["https://aka.doubaocdn.com/s/M9sPGOaIYt"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一羽绒两件套 #251905","desc":"石墨烯聚热 90%鸭绒","imgs":["https://aka.doubaocdn.com/s/IASVCfcqp3"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一羽绒两件套 #250826","desc":"90%白鸭绒 石墨烯发热","imgs":["https://aka.doubaocdn.com/s/o3bfRLLWQX"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一羽绒两件套 #250829","desc":"90%白鹅绒 石墨烯聚热","imgs":["https://aka.doubaocdn.com/s/8QbzUMrnxe"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一商旅羽绒两件套 #251903Y","desc":"90鸭绒 商务出行","imgs":["https://aka.doubaocdn.com/s/47KzwMrzdu"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"三合一商旅羽绒两件套 #250827Y","desc":"90%羽绒无缝内胆","imgs":["https://aka.doubaocdn.com/s/GyKt2WkRpq"],"points":["","",""],"detailBlocks":[],"cat":""}]},{"id":"mianfu","name":"棉服","count":"3款","desc":"3M新雪丽科技棉服","cover":"https://aka.doubaocdn.com/s/nPmlny6ZWf","items":[{"name":"立领一体科技棉服 #252011","desc":"3M新雪丽 轻暖聚热","imgs":["https://aka.doubaocdn.com/s/nPmlny6ZWf"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"3M新雪丽一体科技棉服 #262007","desc":"高蓬不缩绒 抗菌耐水洗","imgs":["https://aka.doubaocdn.com/s/Ee1sLBql9V"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"可脱帽一体科技棉服 #252013","desc":"3M新雪丽 可脱帽","imgs":["https://aka.doubaocdn.com/s/IN58AiQJa5"],"points":["","",""],"detailBlocks":[],"cat":""}]},{"id":"changku","name":"长裤","count":"5款","desc":"休闲四季裤 · 软壳冲锋裤","cover":"https://aka.doubaocdn.com/s/JSVZzmPTkr","items":[{"name":"弹力休闲四季裤 #251655","desc":"320D登山呢 免烫抗皱","imgs":["https://aka.doubaocdn.com/s/JSVZzmPTkr"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"摇粒软壳冲锋裤 #250287","desc":"小方格摇粒 防泼水保暖","imgs":["https://aka.doubaocdn.com/s/8tpqGVcwms"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"超细绒软壳冲锋裤 #250289","desc":"牛奶丝拉绒 防风防泼水","imgs":["https://aka.doubaocdn.com/s/1ya8KHccNl"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"软壳冲锋裤 #261619","desc":"牛奶丝复合 四向抗泼水","imgs":["https://aka.doubaocdn.com/s/VKMoQKwRHh"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"软壳冲锋裤 #261621","desc":"四面弹复合 免烫工艺","imgs":["https://aka.doubaocdn.com/s/SX8jay05Cb"],"points":["","",""],"detailBlocks":[],"cat":""}]},{"id":"jiake","name":"夹克","count":"2款","desc":"软壳夹克 · 行政商旅夹克","cover":"https://aka.doubaocdn.com/s/r9u8v0nW4S","items":[{"name":"轻弹软壳夹克 #261243","desc":"尼龙登山布 吸湿排汗","imgs":["https://aka.doubaocdn.com/s/r9u8v0nW4S"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"立领行政商旅夹克 #251107","desc":"静水压5000+ 四面弹","imgs":["https://aka.doubaocdn.com/s/JaFFvTvw6J"],"points":["","",""],"detailBlocks":[],"cat":""}]},{"id":"majia","name":"马甲","count":"2款","desc":"立领软壳马甲 · 科技棉马甲","cover":"https://aka.doubaocdn.com/s/BHGPkU3iVs","items":[{"name":"立领软壳马甲 #251707","desc":"四面弹三合一 防泼水防风","imgs":["https://aka.doubaocdn.com/s/BHGPkU3iVs"],"points":["","",""],"detailBlocks":[],"cat":""},{"name":"立领科技棉马甲 #252009","desc":"3M新雪丽保暖棉 防泼水","imgs":["https://aka.doubaocdn.com/s/Orx02d5oI1"],"points":["","",""],"detailBlocks":[],"cat":""}]},{"id":"zhuarong","name":"抓绒衣","count":"1款","desc":"抓绒开衫外套","cover":"https://aka.doubaocdn.com/s/B9PVNhrpua","items":[{"name":"抓绒衣开衫外套 #252101","desc":"300克超细摇粒绒 立领保暖","imgs":["https://aka.doubaocdn.com/s/B9PVNhrpua"],"points":["","",""],"detailBlocks":[],"cat":""}]}],"covers":["https://aka.doubaocdn.com/s/4hV1n5oZGd","https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/76c6c29b724c43beada4eac57671424a.jpg~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202609080038073C9C2DC2DAD07292D66B&rrcfp=935dee89&x-expires=1789404391&x-signature=cjvtnDWRSzCgP4a0CCXHTXjSCzI%3D"]};
+var DATA = {"config":{"brand":"2026秋冬中高端产品手册","brandSub":"以极致供应链能力，赋能品牌创造价值","foot":"2026秋冬中高端产品手册","contact":{"phone":"","wechat":"","qr":""},"stat":"<script>\nvar _hmt = _hmt || [];\n(function() {\n  var hm = document.createElement(\"script\");\n  hm.src = \"https://hm.baidu.com/hm.js?483f1365fd28de691049b1db59ceec81\";\n  var s = document.getElementsByTagName(\"script\")[0];\n  s.parentNode.insertBefore(hm, s);\n})();\n<\/script>"},"about":{"title":"品牌资质","text":"","img":"https://aka.doubaocdn.com/s/kUSRSgOVCt"},"cats":[{"id":"chongfeng","name":"冲锋衣","count":"19款","desc":"轻量化冲锋衣 · 三合一两件套 · 防护冲锋衣2","cover":"https://aka.doubaocdn.com/s/9trdZTag9T","items":[{"name":"女士短款连帽冲锋衣 #251808","desc":"国家二级冲锋衣标准","imgs":["https://aka.doubaocdn.com/s/k68SsvTKGC"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o2m2"},{"name":"立领一体冲锋衣 #251803","desc":"静水压10000 火山岩棉袖","imgs":["https://aka.doubaocdn.com/s/cESjwmOczP"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o4ha"},{"name":"高太尔防护冲锋衣 #230833","desc":"CAO7001 TPU透气膜","imgs":["https://aka.doubaocdn.com/s/M9jmGzEgmZ"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oe1z"},{"name":"三合一防护两件套 #220801","desc":"摇粒绒内胆 四面弹防风防水","imgs":["https://aka.doubaocdn.com/s/pQtUHTxWlx"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350om1k"},{"name":"三合一软壳两件套 #261809","desc":"T400抓条 静水压5000+","imgs":["https://aka.doubaocdn.com/s/HUrVsYMj5P"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o4gh"},{"name":"三合一暖绒两件套 #261815","desc":"3M新雪丽棉内胆","imgs":["https://aka.doubaocdn.com/s/ilC7jF5J5w"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o150"},{"name":"三合一防护两件套 #95588","desc":"300克摇粒绒内胆 可定制","imgs":["https://aka.doubaocdn.com/s/LuqtnZQnqd"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o228"},{"name":"三合一防护两件套 #220805","desc":"杜邦三防科技 摇粒内胆","imgs":["https://aka.doubaocdn.com/s/6BQmBhUSYV"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ohcg"},{"name":"三合一防护两件套 #230821","desc":"特氟龙三防 320克摇粒内胆","imgs":["https://aka.doubaocdn.com/s/7zVffIR6L8"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350obqe"},{"name":"三合一防护两件套 #250809A","desc":"3D高弹 全压胶拉链","imgs":["https://aka.doubaocdn.com/s/6M2jxM7g6y"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350olyi"},{"name":"三合一防护两件套 #220807","desc":"银狐绒内胆 四防功能","imgs":["https://aka.doubaocdn.com/s/GqPnPx6iUf"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350okk7"},{"name":"三合一商旅两件套 #250827","desc":"气凝胶科技内胆","imgs":["https://aka.doubaocdn.com/s/OdbBJRpcZT"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oe1o"},{"name":"三合一防护两件套 #250895","desc":"桃皮绒小牛津 320克摇粒","imgs":["https://aka.doubaocdn.com/s/Oa8dniS2l9"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o304"},{"name":"三合一防护冲锋衣 #251801","desc":"静水压10000 国家二级","imgs":["https://aka.doubaocdn.com/s/Vb7befjL07"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oapr"},{"name":"三合一防护冲锋衣 #230831","desc":"高透戈尔压胶 全压胶无缝","imgs":["https://aka.doubaocdn.com/s/QtWRPJhbm7"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oeeb"},{"name":"三合一防护冲锋衣 #95566","desc":"高水压20000mm 全压胶热封","imgs":["https://aka.doubaocdn.com/s/fBrUz6VBUs"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350opaw"},{"name":"三合一防护冲锋衣 #250891","desc":"杜邦三防 360g摇粒内胆","imgs":["https://aka.doubaocdn.com/s/EQNezM7sv6"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o6ss"},{"name":"三合一防护羽绒冲锋衣 #230831Y","desc":"90%鸭绒 石墨烯聚热","imgs":["https://aka.doubaocdn.com/s/knTJIEqH0B"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ojlf"}],"children":[{"id":"sub1","name":"三合一","desc":"","cover":"","children":[],"items":[{"name":"轻量化冲锋衣 #250805","desc":"70D高密 ","imgs":["https://aka.doubaocdn.com/s/9trdZTag9T"],"points":["","",""],"detailBlocks":[],"cat":"","fabric":"面层100%锦纶，里层100%聚酯纤维","id":"pmtue350owvz"}]}]},{"id":"ruanke","name":"软壳衣","count":"7款","desc":"连帽软壳 · 立领商务 · 防护软壳","cover":"https://aka.doubaocdn.com/s/GvpYrYc2UD","items":[{"name":"连帽休闲软壳衣 #231001","desc":"小方格摇粒320g 360°防风","imgs":["https://aka.doubaocdn.com/s/GvpYrYc2UD"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350om0t"},{"name":"连帽软壳衣 #261717","desc":"三格摇粒 防冷风连帽","imgs":["https://aka.doubaocdn.com/s/DwUXFgpul2"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oz2"},{"name":"连帽休闲软壳衣 #251709","desc":"三合一复合棉服款 防风保暖","imgs":["https://aka.doubaocdn.com/s/vKqf32KhLX"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350og6t"},{"name":"立领行政商旅软壳衣 #251711","desc":"复合摇粒绒 四防防水","imgs":["https://aka.doubaocdn.com/s/49eFzlRTLe"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oemj"},{"name":"连帽户外软壳衣 #251003","desc":"小方格摇粒 3D裁剪","imgs":["https://aka.doubaocdn.com/s/CanxyAnU3G"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o5as"},{"name":"立领商务软壳衣 #231005","desc":"小方格摇粒 商务利落","imgs":["https://aka.doubaocdn.com/s/lrQeMQyP3j"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oikj"},{"name":"防护连帽软壳衣 #251716","desc":"收腰抽绳 显高显瘦","imgs":["https://aka.doubaocdn.com/s/autjQQpbwH"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o7lg"}],"children":[]},{"id":"fengyi","name":"风衣","count":"9款","desc":"轻弹软壳风衣 · 连帽休闲 · 短款风衣","cover":"https://aka.doubaocdn.com/s/9V9iEPgDFw","items":[{"name":"轻弹软壳风衣 #261245","desc":"可调节防风连帽 马蹄袖","imgs":["https://aka.doubaocdn.com/s/9V9iEPgDFw"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o56h"},{"name":"弹力风衣 #251233","desc":"四面弹 防泼水","imgs":["https://aka.doubaocdn.com/s/aNdhFHoq5A"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oyzz"},{"name":"弹力风衣 #261251","desc":"凉感面料 舒适弹力","imgs":["https://aka.doubaocdn.com/s/xepovM8D2D"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350okb0"},{"name":"轻量化风衣外套 #251105","desc":"轻量化科技 压胶防风","imgs":["https://aka.doubaocdn.com/s/a3mwXi3Tvi"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350obc"},{"name":"风衣外套 #261241","desc":"提花格子面料 立体壳帽","imgs":["https://aka.doubaocdn.com/s/QyJ1XXWOgT"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o50x"},{"name":"连帽休闲风衣外套 #251805","desc":"透气15mm/s 四级防泼水","imgs":["https://aka.doubaocdn.com/s/YsZ6J7d3wj"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350osvo"},{"name":"连帽休闲风衣外套 #251101","desc":"防水透湿5000+ 三拉链机能","imgs":["https://aka.doubaocdn.com/s/nf0TnafQb1"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350og8v"},{"name":"户外休闲风衣外套 #250809","desc":"全压胶透湿 四级防泼水","imgs":["https://aka.doubaocdn.com/s/DNvuvcaVrf"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ofwa"},{"name":"短款风衣外套 #251108","desc":"短款宽松廓形 三拉链机能","imgs":["https://aka.doubaocdn.com/s/kcnV2EDSo7"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oo5q"}]},{"id":"tixu","name":"长袖T恤","count":"5款","desc":"针织 · 亨利领 · 半开衫 · 翻领","cover":"https://aka.doubaocdn.com/s/eBFEGmQ7Px","items":[{"name":"针织长袖T恤 #261575","desc":"Sorona索罗那 7A抗菌","imgs":["https://aka.doubaocdn.com/s/eBFEGmQ7Px"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350otwo"},{"name":"亨利领长袖T恤 #261577","desc":"无缝暗扣亨利领 裸感面料","imgs":["https://aka.doubaocdn.com/s/S2EYU4SFgR"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ow21"},{"name":"半开衫长袖T恤 #2515559","desc":"棉感弹力布 半开拉链立领","imgs":["https://aka.doubaocdn.com/s/kwDvHh27jb"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o5ku"},{"name":"半开衫翻领长袖T恤 #261579","desc":"拼接立领 7A抗菌","imgs":["https://aka.doubaocdn.com/s/ylNOaQJGkr"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ocih"},{"name":"针织开衫长袖T恤 #261580","desc":"压胶口袋拉链 7A抗菌","imgs":["https://aka.doubaocdn.com/s/iGWFVLX7FA"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oqep"}]},{"id":"yurong","name":"羽绒服","count":"7款","desc":"商旅休闲羽绒服 · 三合一羽绒两件套","cover":"https://aka.doubaocdn.com/s/ssJmHijQfR","items":[{"name":"商旅休闲羽绒服 #262001","desc":"90%白鸭绒 防泼水","imgs":["https://aka.doubaocdn.com/s/ssJmHijQfR"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ooq5"},{"name":"三合一羽绒两件套 #261907","desc":"90绒内胆 轻盈保暖","imgs":["https://aka.doubaocdn.com/s/M9sPGOaIYt"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ofzi"},{"name":"三合一羽绒两件套 #251905","desc":"石墨烯聚热 90%鸭绒","imgs":["https://aka.doubaocdn.com/s/IASVCfcqp3"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o7iw"},{"name":"三合一羽绒两件套 #250826","desc":"90%白鸭绒 石墨烯发热","imgs":["https://aka.doubaocdn.com/s/o3bfRLLWQX"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o9ow"},{"name":"三合一羽绒两件套 #250829","desc":"90%白鹅绒 石墨烯聚热","imgs":["https://aka.doubaocdn.com/s/8QbzUMrnxe"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ouq"},{"name":"三合一商旅羽绒两件套 #251903Y","desc":"90鸭绒 商务出行","imgs":["https://aka.doubaocdn.com/s/47KzwMrzdu"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oi77"},{"name":"三合一商旅羽绒两件套 #250827Y","desc":"90%羽绒无缝内胆","imgs":["https://aka.doubaocdn.com/s/GyKt2WkRpq"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350okhw"}]},{"id":"mianfu","name":"棉服","count":"3款","desc":"3M新雪丽科技棉服","cover":"https://aka.doubaocdn.com/s/nPmlny6ZWf","items":[{"name":"立领一体科技棉服 #252011","desc":"3M新雪丽 轻暖聚热","imgs":["https://aka.doubaocdn.com/s/nPmlny6ZWf"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oc36"},{"name":"3M新雪丽一体科技棉服 #262007","desc":"高蓬不缩绒 抗菌耐水洗","imgs":["https://aka.doubaocdn.com/s/Ee1sLBql9V"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350osk5"},{"name":"可脱帽一体科技棉服 #252013","desc":"3M新雪丽 可脱帽","imgs":["https://aka.doubaocdn.com/s/IN58AiQJa5"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o8nt"}]},{"id":"changku","name":"长裤","count":"5款","desc":"休闲四季裤 · 软壳冲锋裤","cover":"https://aka.doubaocdn.com/s/JSVZzmPTkr","items":[{"name":"弹力休闲四季裤 #251655","desc":"320D登山呢 免烫抗皱","imgs":["https://aka.doubaocdn.com/s/JSVZzmPTkr"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350okve"},{"name":"摇粒软壳冲锋裤 #250287","desc":"小方格摇粒 防泼水保暖","imgs":["https://aka.doubaocdn.com/s/8tpqGVcwms"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350olrf"},{"name":"超细绒软壳冲锋裤 #250289","desc":"牛奶丝拉绒 防风防泼水","imgs":["https://aka.doubaocdn.com/s/1ya8KHccNl"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ozoz"},{"name":"软壳冲锋裤 #261619","desc":"牛奶丝复合 四向抗泼水","imgs":["https://aka.doubaocdn.com/s/VKMoQKwRHh"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o63o"},{"name":"软壳冲锋裤 #261621","desc":"四面弹复合 免烫工艺","imgs":["https://aka.doubaocdn.com/s/SX8jay05Cb"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ozj3"}]},{"id":"jiake","name":"夹克","count":"2款","desc":"软壳夹克 · 行政商旅夹克","cover":"https://aka.doubaocdn.com/s/r9u8v0nW4S","items":[{"name":"轻弹软壳夹克 #261243","desc":"尼龙登山布 吸湿排汗","imgs":["https://aka.doubaocdn.com/s/r9u8v0nW4S"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oh5s"},{"name":"立领行政商旅夹克 #251107","desc":"静水压5000+ 四面弹","imgs":["https://aka.doubaocdn.com/s/JaFFvTvw6J"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350ocsd"}]},{"id":"majia","name":"马甲","count":"2款","desc":"立领软壳马甲 · 科技棉马甲","cover":"https://aka.doubaocdn.com/s/BHGPkU3iVs","items":[{"name":"立领软壳马甲 #251707","desc":"四面弹三合一 防泼水防风","imgs":["https://aka.doubaocdn.com/s/BHGPkU3iVs"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o5lr"},{"name":"立领科技棉马甲 #252009","desc":"3M新雪丽保暖棉 防泼水","imgs":["https://aka.doubaocdn.com/s/Orx02d5oI1"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350oa2u"}]},{"id":"zhuarong","name":"抓绒衣","count":"1款","desc":"抓绒开衫外套","cover":"https://aka.doubaocdn.com/s/B9PVNhrpua","items":[{"name":"抓绒衣开衫外套 #252101","desc":"300克超细摇粒绒 立领保暖","imgs":["https://aka.doubaocdn.com/s/B9PVNhrpua"],"points":["","",""],"detailBlocks":[],"cat":"","id":"pmtue350o6vf"}]}],"covers":["https://aka.doubaocdn.com/s/4hV1n5oZGd","https://p6-flow-sign.byteimg.com/tos-cn-i-ik7evvg4ik/76c6c29b724c43beada4eac57671424a.jpg~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=202609080038073C9C2DC2DAD07292D66B&rrcfp=935dee89&x-expires=1789404391&x-signature=cjvtnDWRSzCgP4a0CCXHTXjSCzI%3D"]};
 var CONFIG = DATA.config || {brand:"2026秋冬中高端产品手册",brandSub:"",foot:""};
 var CATS = DATA.cats || [];
 var COVERS = DATA.covers || [];
@@ -171,6 +201,7 @@ var CONTACT = (DATA.config && DATA.config.contact) || {};
     <div class="swiper-dots" id="swiper-dots"></div>
   </div>
   <div class="all-entry" id="all-entry">全部产品导航 ›</div>
+  <div class="fav-entry" id="fav-entry"><svg viewBox="0 0 24 24" width="15" height="15" style="flex:none"><path d="M12 21s-7.5-4.6-9.7-9.2C.5 8.4 2.4 4.8 6 4.8c2 0 3.3 1 4.2 2.3h3.6C14.7 5.8 16 4.8 18 4.8c3.6 0 5.5 3.6 3.7 7C19.5 16.4 12 21 12 21z" fill="#e8590c"/></svg>我的收藏<span class="fav-num" id="fav-count"></span></div>
   <div class="cat-grid" id="cat-grid"></div>
   <div class="about-wrap">
     <div class="about-title" id="about-title">品牌资质</div>
@@ -199,6 +230,7 @@ var CONTACT = (DATA.config && DATA.config.contact) || {};
   <div class="detail-wrap">
     <div class="mimgs" id="mimgs">
       <div class="mimg-track" id="mimg-track"></div>
+      <span class="fav-btn" id="fav-btn"></span>
       <span class="mimg-btn prev" id="mprev"></span>
       <span class="mimg-btn next" id="mnext"></span>
       <div class="mimg-dots" id="mimg-dots"></div>
@@ -216,6 +248,10 @@ var CONTACT = (DATA.config && DATA.config.contact) || {};
   <div class="header"><span class="back-btn" id="back-search">‹ 返回</span><h1 id="search-title"></h1><div class="sub" id="search-sub"></div></div>
   <div class="grid" id="sgrid"></div>
 </div>
+<div class="view" id="view-fav">
+  <div class="header"><span class="back-btn" id="back-fav">‹ 返回</span><h1>我的收藏</h1><div class="sub" id="fav-sub"></div></div>
+  <div class="grid" id="fav-grid"></div>
+</div>
 <div class="lightbox" id="lightbox">
   <span class="lb-close" id="lb-close">✕</span>
   <div class="lb-stage" id="lb-stage"><img id="lb-img" alt="大图"></div>
@@ -231,6 +267,21 @@ var CONTACT = (DATA.config && DATA.config.contact) || {};
   </div>
 </div>
 <div class="back-top" id="back-top" title="返回顶部">↑</div>
+<div class="auth-mask" id="auth-mask">
+  <div class="auth-box">
+    <span class="auth-close" id="auth-close">✕</span>
+    <h3 id="auth-title">登录后可同步收藏</h3>
+    <div class="auth-sub">换手机登录也能看到收藏的产品</div>
+    <input class="auth-input" id="auth-email" type="email" placeholder="邮箱地址" autocomplete="email">
+    <input class="auth-input" id="auth-pass" type="password" placeholder="密码（至少 6 位）" autocomplete="current-password">
+    <div class="auth-err" id="auth-err"></div>
+    <button class="auth-btn" id="auth-go">登录</button>
+    <div class="auth-switch" id="auth-switch">没有账号？注册一个</div>
+    <div class="auth-tip">注册即登录，收藏自动同步</div>
+  </div>
+</div>
+<div class="fav-tip" id="fav-tip"></div>
+<script src="https://static.cloudbase.net/cloudbase-js-sdk/2.4.4/cloudbase.full.js"></script>
 <script>
 var $ = function(id){ return document.getElementById(id); };
 var state = { path: [], idx: null, detailIdx: 0, prevHash: "", curHash: "" };
@@ -252,7 +303,7 @@ function countItems(node){
 }
 function itemImg(it){ var u = (it.imgs && it.imgs[0]) || it.img || ""; return u || PLACEHOLDER; }
 function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
-function setView(v){ ["view-home","view-list","view-all","view-item","view-search"].forEach(function(x){ $(x).classList.remove("active"); }); $(v).classList.add("active"); window.scrollTo(0,0); }
+function setView(v){ ["view-home","view-list","view-all","view-item","view-search","view-fav"].forEach(function(x){ $(x).classList.remove("active"); }); $(v).classList.add("active"); window.scrollTo(0,0); }
 /* ---- 首页 ---- */
 var sw = { idx:0, timer:null, startX:0 };
 function swGo(i){
@@ -315,6 +366,8 @@ function showHome(){
     else { location.hash = "#/all"; }
   };
   $("all-entry").onclick = function(){ location.hash = "#/all"; };
+  $("fav-entry").onclick = function(){ location.hash = "#/fav"; };
+  refreshFavBtn();
   var html = "";
   CATS.forEach(function(c){
     html += '<div class="cat-card" onclick="location.hash=\'#/'+c.id+'\'">'
@@ -402,7 +455,9 @@ function showList(ids){
     html += '<div class="grid-card" onclick="location.hash=\'#/'+ids.concat([i]).join("/")+'\'">'
       + '<img loading="lazy" src="'+itemImg(it)+'" alt="'+esc(it.name)+'">'
       + '<div class="gc-name">'+esc(it.name)+'</div>'
-      + '<div class="gc-desc">'+esc(it.desc)+'</div></div>';
+      + '<div class="gc-desc">'+esc(it.desc)+'</div>'
+      + ((it.fabric && String(it.fabric).trim()) ? '<div class="gc-fabric">成分：' + esc(it.fabric) + '</div>' : "")
+      + '</div>';
   });
   $("grid").innerHTML = html;
   $("back-item").style.display="none";
@@ -474,6 +529,7 @@ function renderNavGrid(){
       + '<div class="n-name">' + esc(name) + '</div>'
       + (no ? '<div class="n-no">' + esc(no) + '</div>' : "")
       + (it.desc ? '<div class="n-desc">' + esc(it.desc) + '</div>' : "")
+      + ((it.fabric && String(it.fabric).trim()) ? '<div class="n-fabric">成分：' + esc(it.fabric) + '</div>' : "")
       + '</div></div>';
   });
   $("nav-grid").innerHTML = h || '<div class="nav-empty">没有找到相关产品</div>';
@@ -556,6 +612,9 @@ function showItem(ids, idx){
   };
   $("back-list").style.display="none";
   renderContact("item-contact");
+  $("fav-btn").style.display = "flex";
+  $("fav-btn").onclick = favToggle;
+  refreshFavBtn();
 }
 /* ---- 搜索结果页 ---- */
 function showSearch(q){
@@ -571,7 +630,7 @@ function showSearch(q){
       var p = path + "/" + n.id;
       (n.items||[]).forEach(function(it, i){
         var hay = (it.name||"") + " " + (it.desc||"") + " " + (it.points||[]).join(" ");
-        if(hay.indexOf(q) >= 0){ out.push({ name: it.name, hash: "#/" + p + "/" + i, img: itemImg(it), desc: it.desc || "" }); }
+        if(hay.indexOf(q) >= 0){ out.push({ name: it.name, hash: "#/" + p + "/" + i, img: itemImg(it), desc: it.desc || "", fabric: it.fabric || "" }); }
       });
       if(n.children) walk(n.children, p);
     });
@@ -582,16 +641,184 @@ function showSearch(q){
     gh += '<div class="grid-card" onclick="location.hash=\''+r.hash+'\'">'
       + '<img loading="lazy" src="'+r.img+'" alt="'+esc(r.name)+'">'
       + '<div class="gc-name">'+esc(r.name)+'</div>'
-      + '<div class="gc-desc">'+esc(r.desc)+'</div></div>';
+      + '<div class="gc-desc">'+esc(r.desc)+'</div>'
+      + (r.fabric ? '<div class="gc-fabric">成分：'+esc(r.fabric)+'</div>' : "")
+      + '</div>';
   });
   $("sgrid").innerHTML = gh || '<div style="padding:30px 16px;text-align:center;color:#999;font-size:14px;">没有找到相关产品，换个关键词试试</div>';
 }
+/* ---- 收藏夹（云服务同步，需在控制台配置安全域名与 favorites 集合） ---- */
+var CB_APP=null, CB_AUTH=null, CB_DB=null;
+var favSet={}, favCount=0, favBusy=false;
+function initCloud(){
+  try{
+    if(typeof cloudbase==="undefined" || !cloudbase.init) return;
+    CB_APP = cloudbase.init({ env: "xishafz-d0gojeyv51e09576a" });
+    CB_AUTH = CB_APP.auth();
+    CB_DB = CB_APP.database();
+  }catch(e){ CB_APP=null; }
+}
+initCloud();
+function curItem(){
+  var node = findNode(state.path);
+  if(!node || !node.items || state.idx == null) return null;
+  return node.items[state.idx];
+}
+function itemId(it){ return it.id || ("it_" + state.path.join("/") + "_" + state.idx); }
+var idMap = {};
+(function walk(ns, path){
+  ns.forEach(function(n){
+    var p = path.concat([n.id]);
+    (n.items||[]).forEach(function(it, i){ if(it.id) idMap[it.id] = { it: it, path: p, idx: i }; });
+    if(n.children) walk(n.children, p);
+  });
+})(CATS, []);
+function favBtnHtml(id){
+  var on = !!favSet[id];
+  return '<svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 21s-7.5-4.6-9.7-9.2C.5 8.4 2.4 4.8 6 4.8c2 0 3.3 1 4.2 2.3h3.6C14.7 5.8 16 4.8 18 4.8c3.6 0 5.5 3.6 3.7 7C19.5 16.4 12 21 12 21z" fill="'+(on?"#e8590c":"rgba(255,255,255,.92)")+'" stroke="'+(on?"#e8590c":"#555")+'" stroke-width="1.2"/></svg>';
+}
+function refreshFavBtn(){
+  var b = $("fav-btn");
+  if(!b) return;
+  var it = curItem();
+  var id = it ? itemId(it) : "";
+  b.innerHTML = favBtnHtml(id);
+  var c = $("fav-count");
+  if(c){ c.textContent = favCount ? "(" + favCount + ")" : ""; }
+}
+function showFavTip(msg){
+  var t = $("fav-tip");
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._h);
+  t._h = setTimeout(function(){ t.classList.remove("show"); }, 1600);
+}
+function favToggle(){
+  if(!CB_AUTH){ showFavTip("收藏服务暂不可用"); return; }
+  var it = curItem();
+  if(!it) return;
+  var id = itemId(it);
+  CB_AUTH.getLoginState().then(function(ls){
+    if(!ls){ showAuth(); return; }
+    if(favSet[id]) favRemove(id);
+    else favAdd(id, it);
+  }, function(){ showFavTip("网络异常，请重试"); });
+}
+function favAdd(id, it){
+  if(favBusy) return; favBusy = true;
+  CB_DB.collection("favorites").add({ itemId: id, name: it.name || "", time: Date.now() }).then(function(res){
+    favBusy = false;
+    favSet[id] = res.id || res._id || "1";
+    favCount++;
+    refreshFavBtn();
+    showFavTip("已收藏，登录后任何设备可见");
+  }, function(){ favBusy = false; showFavTip("收藏失败，请重试"); });
+}
+function favRemove(id){
+  if(favBusy || !favSet[id]) return; favBusy = true;
+  CB_DB.collection("favorites").doc(favSet[id]).remove().then(function(){
+    favBusy = false;
+    delete favSet[id];
+    favCount--;
+    refreshFavBtn();
+    showFavTip("已取消收藏");
+  }, function(){ favBusy = false; showFavTip("操作失败，请重试"); });
+}
+function loadFavs(){
+  if(!CB_DB) return;
+  CB_AUTH.getLoginState().then(function(ls){
+    if(!ls){ refreshFavBtn(); return; }
+    CB_DB.collection("favorites").where({ _openid: ls.user.uid }).get().then(function(res){
+      favSet = {}; favCount = 0;
+      (res.data||[]).forEach(function(d){ favSet[d.itemId] = d._id; favCount++; });
+      refreshFavBtn();
+    }, function(){});
+  }, function(){});
+}
+/* ---- 登录弹窗 ---- */
+var authMode = "login";
+function showAuth(){
+  $("auth-email").value = ""; $("auth-pass").value = ""; $("auth-err").textContent = "";
+  authMode = "login";
+  $("auth-title").textContent = "登录后可同步收藏";
+  $("auth-go").textContent = "登录";
+  $("auth-switch").textContent = "没有账号？注册一个";
+  $("auth-mask").style.display = "flex";
+}
+$("auth-close").onclick = function(){ $("auth-mask").style.display = "none"; };
+$("auth-mask").onclick = function(e){ if(e.target === this) this.style.display = "none"; };
+$("auth-switch").onclick = function(){
+  authMode = (authMode === "login") ? "signup" : "login";
+  $("auth-title").textContent = (authMode === "signup") ? "注册账号" : "登录后可同步收藏";
+  $("auth-go").textContent = (authMode === "signup") ? "注册并登录" : "登录";
+  $("auth-switch").textContent = (authMode === "signup") ? "已有账号？去登录" : "没有账号？注册一个";
+  $("auth-err").textContent = "";
+};
+$("auth-go").onclick = function(){
+  if(!CB_AUTH){ $("auth-err").textContent = "云服务未就绪，请刷新重试"; return; }
+  var em = $("auth-email").value.trim();
+  var pw = $("auth-pass").value;
+  if(!em || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ $("auth-err").textContent = "请输入正确的邮箱地址"; return; }
+  if(pw.length < 6){ $("auth-err").textContent = "密码至少 6 位"; return; }
+  $("auth-go").disabled = true;
+  var done = function(err){
+    $("auth-go").disabled = false;
+    if(err){ $("auth-err").textContent = (err && err.message) ? err.message : "操作失败，请重试"; return; }
+    $("auth-mask").style.display = "none";
+    loadFavs();
+    showFavTip("登录成功");
+  };
+  if(authMode === "signup"){ CB_AUTH.signUpWithEmailAndPassword(em, pw).then(function(){ done(); }, done); }
+  else { CB_AUTH.signInWithEmailAndPassword(em, pw).then(function(){ done(); }, done); }
+};
+function showFav(){
+  setView("view-fav");
+  $("back-fav").style.display = "inline";
+  $("back-fav").onclick = function(){ var p = state.prevHash || ""; location.hash = (p && p.indexOf("#/fav") !== 0) ? p : "#/"; };
+  $("back-item").style.display = "none";
+  $("back-all").style.display = "none";
+  var box = $("fav-grid");
+  if(!CB_DB){
+    $("fav-sub").textContent = "";
+    box.innerHTML = '<div class="fav-empty">收藏服务未配置，请稍后再试</div>';
+    return;
+  }
+  CB_AUTH.getLoginState().then(function(ls){
+    if(!ls){
+      $("fav-sub").textContent = "登录后可在任何设备查看收藏";
+      box.innerHTML = '<div class="fav-empty"><p>还没有登录</p><button class="auth-btn" id="fav-login">登录 / 注册</button></div>';
+      $("fav-login").onclick = showAuth;
+      return;
+    }
+    $("fav-sub").textContent = "已登录：" + (ls.user.email || "");
+    CB_DB.collection("favorites").where({ _openid: ls.user.uid }).get().then(function(res){
+      var list = res.data || [];
+      favSet = {}; favCount = 0;
+      list.forEach(function(d){ favSet[d.itemId] = d._id; favCount++; });
+      refreshFavBtn();
+      var gh = "";
+      list.forEach(function(d){
+        var r = idMap[d.itemId];
+        if(!r) return;
+        gh += '<div class="grid-card" onclick="location.hash=\'#/'+r.path.join("/")+'/'+r.idx+'\'">'
+          + '<img loading="lazy" src="'+itemImg(r.it)+'" alt="'+esc(r.it.name)+'">'
+          + '<div class="gc-name">'+esc(r.it.name)+'</div>'
+          + ((r.it.fabric && String(r.it.fabric).trim()) ? '<div class="gc-fabric">成分：'+esc(r.it.fabric)+'</div>' : "")
+          + '</div>';
+      });
+      box.innerHTML = gh || '<div class="fav-empty">还没有收藏的产品<br>逛一逛，在详情页点心形即可收藏</div>';
+    }, function(){ box.innerHTML = '<div class="fav-empty">加载失败，请重试</div>'; });
+  }, function(){ box.innerHTML = '<div class="fav-empty">加载失败，请重试</div>'; });
+}
+if(CB_AUTH){ CB_AUTH.onLoginStateChanged(function(){ loadFavs(); }); }
 /* ---- 路由 ---- */
 function route(){
   var h2 = (location.hash || "#/").replace(/^#/, "");
   var parts = h2.split("/").filter(Boolean);
   if(parts.length === 0){ showHome(); return; }
   if(parts[0] === "all"){ showAll(); return; }
+  if(parts[0] === "fav"){ showFav(); return; }
   if(parts[0] === "search"){ showSearch(decodeURIComponent(parts.slice(1).join("/")) || ""); return; }
   var last = parts[parts.length-1];
   if(/^\d+$/.test(last)){
