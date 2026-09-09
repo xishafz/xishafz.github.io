@@ -10,7 +10,7 @@
 <meta property="og:image" content="https://aka.doubaocdn.com/s/4hV1n5oZGd">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; background:#f4f4f2; color:#222; }
+body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; background:#f4f4f2; color:#222; padding-bottom:62px; }
 .view { display:none; }
 .view.active { display:block; }
 .header { position:sticky; top:0; z-index:100; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.08); padding:14px 16px; }
@@ -111,25 +111,17 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 #view-fav { position:fixed; inset:0; background:#f4f4f2; z-index:89; display:none; flex-direction:column; }
 #view-fav.active { display:flex; }
 #view-fav .header { flex:none; }
-#view-fav .grid { padding-top:14px; }
+#view-fav .grid { padding-top:14px; padding-bottom:76px; }
 .fav-empty { padding:50px 20px; text-align:center; color:#999; font-size:14px; line-height:2; }
-.fav-empty .auth-btn { display:inline-block; margin-top:8px; }
 /* 详情页收藏按钮 */
 .fav-btn { position:absolute; top:10px; right:10px; z-index:9; width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.92); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 6px rgba(0,0,0,.18); }
 .fav-btn svg { display:block; }
-/* 登录弹窗 */
-.auth-mask { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; display:none; align-items:center; justify-content:center; padding:24px; }
-.auth-box { position:relative; background:#fff; border-radius:14px; width:100%; max-width:340px; padding:22px 22px 16px; box-shadow:0 10px 40px rgba(0,0,0,.2); }
-.auth-close { position:absolute; top:10px; right:14px; font-size:18px; color:#aaa; cursor:pointer; }
-.auth-box h3 { font-size:17px; text-align:center; }
-.auth-sub { font-size:12px; color:#999; text-align:center; margin:6px 0 16px; }
-.auth-input { width:100%; padding:10px 12px; border:1px solid #e0e0dd; border-radius:8px; font-size:14px; margin-bottom:10px; outline:none; }
-.auth-input:focus { border-color:#e8590c; }
-.auth-err { font-size:12px; color:#d64541; min-height:16px; margin-bottom:6px; }
-.auth-btn { width:100%; padding:11px 0; border:none; border-radius:8px; background:#e8590c; color:#fff; font-size:15px; font-weight:600; cursor:pointer; }
-.auth-btn:disabled { opacity:.5; }
-.auth-switch { text-align:center; font-size:13px; color:#e8590c; margin-top:12px; cursor:pointer; }
-.auth-tip { text-align:center; font-size:11px; color:#bbb; margin-top:8px; }
+/* 底部固定导航栏 */
+.tabbar { position:fixed; left:0; right:0; bottom:0; z-index:98; background:#fff; border-top:1px solid #ececea; display:flex; padding-bottom:env(safe-area-inset-bottom); box-shadow:0 -2px 10px rgba(0,0,0,.06); }
+.tab { flex:1; padding:7px 0 6px; display:flex; flex-direction:column; align-items:center; gap:2px; font-size:11px; color:#999; cursor:pointer; user-select:none; }
+.tab svg { display:block; }
+.tab svg path { fill:currentColor; }
+.tab.on { color:#e8590c; }
 /* 收藏提示 */
 .fav-tip { position:fixed; left:50%; bottom:90px; transform:translateX(-50%); background:rgba(0,0,0,.75); color:#fff; padding:8px 16px; border-radius:18px; font-size:13px; z-index:300; opacity:0; transition:opacity .2s; pointer-events:none; white-space:nowrap; }
 .fav-tip.show { opacity:1; }
@@ -143,7 +135,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaH
 .nav-side .ns-item.on .ns-arrow { color:#e8590c; }
 .nav-main { flex:1; min-width:0; display:flex; flex-direction:column; }
 .nav-search { flex:none; width:100%; box-sizing:border-box; padding:10px 14px; border:none; border-bottom:1px solid #eee; font-size:14px; background:#fff; outline:none; }
-.nav-grid { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px; }
+.nav-grid { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:12px; padding-bottom:76px; }
 .n-card { display:flex; gap:10px; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 1px 4px rgba(0,0,0,.06); cursor:pointer; margin-bottom:10px; }
 .n-card img { width:120px; flex:none; aspect-ratio:1/1; object-fit:cover; display:block; background:#f2f2f0; }
 .n-info { flex:1; min-width:0; padding:10px 10px 10px 0; display:flex; flex-direction:column; justify-content:center; }
@@ -267,21 +259,12 @@ var CONTACT = (DATA.config && DATA.config.contact) || {};
   </div>
 </div>
 <div class="back-top" id="back-top" title="返回顶部">↑</div>
-<div class="auth-mask" id="auth-mask">
-  <div class="auth-box">
-    <span class="auth-close" id="auth-close">✕</span>
-    <h3 id="auth-title">登录后可同步收藏</h3>
-    <div class="auth-sub">换手机登录也能看到收藏的产品</div>
-    <input class="auth-input" id="auth-email" type="email" placeholder="邮箱地址" autocomplete="email">
-    <input class="auth-input" id="auth-pass" type="password" placeholder="密码（至少 6 位）" autocomplete="current-password">
-    <div class="auth-err" id="auth-err"></div>
-    <button class="auth-btn" id="auth-go">登录</button>
-    <div class="auth-switch" id="auth-switch">没有账号？注册一个</div>
-    <div class="auth-tip">注册即登录，收藏自动同步</div>
-  </div>
+<div class="tabbar" id="tabbar">
+  <div class="tab" id="tab-home" onclick="location.hash='#/'"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 3.2 3.4 10.6v9.4a.9.9 0 0 0 .9.9h4.9v-6h5.6v6h4.9a.9.9 0 0 0 .9-.9v-9.4z"/></svg><span>首页</span></div>
+  <div class="tab" id="tab-cat" onclick="location.hash='#/all'"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4.5 4.5h6v6h-6zM13.5 4.5h6v6h-6zM4.5 13.5h6v6h-6zM13.5 13.5h6v6h-6z"/></svg><span>分类</span></div>
+  <div class="tab" id="tab-fav" onclick="location.hash='#/fav'"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 21s-7.5-4.6-9.7-9.2C.5 8.4 2.4 4.8 6 4.8c2 0 3.3 1 4.2 2.3h3.6C14.7 5.8 16 4.8 18 4.8c3.6 0 5.5 3.6 3.7 7C19.5 16.4 12 21 12 21z"/></svg><span>收藏</span></div>
 </div>
 <div class="fav-tip" id="fav-tip"></div>
-<script src="https://static.cloudbase.net/cloudbase-js-sdk/2.4.4/cloudbase.full.js"></script>
 <script>
 var $ = function(id){ return document.getElementById(id); };
 var state = { path: [], idx: null, detailIdx: 0, prevHash: "", curHash: "" };
@@ -647,18 +630,27 @@ function showSearch(q){
   });
   $("sgrid").innerHTML = gh || '<div style="padding:30px 16px;text-align:center;color:#999;font-size:14px;">没有找到相关产品，换个关键词试试</div>';
 }
-/* ---- 收藏夹（云服务同步，需在控制台配置安全域名与 favorites 集合） ---- */
-var CB_APP=null, CB_AUTH=null, CB_DB=null;
-var favSet={}, favCount=0, favBusy=false;
-function initCloud(){
+/* ---- 收藏夹（本地存储：保存在本浏览器，无需登录） ---- */
+var FAV_KEY = "album_favs_v1";
+var favSet = {}, favCount = 0;
+function loadFavs(){
+  favSet = {}; favCount = 0;
   try{
-    if(typeof cloudbase==="undefined" || !cloudbase.init) return;
-    CB_APP = cloudbase.init({ env: "xishafz-d0gojeyv51e09576a" });
-    CB_AUTH = CB_APP.auth();
-    CB_DB = CB_APP.database();
-  }catch(e){ CB_APP=null; }
+    var raw = localStorage.getItem(FAV_KEY);
+    if(raw){
+      var arr = JSON.parse(raw) || [];
+      arr.forEach(function(d){ if(d && d.itemId) favSet[d.itemId] = d; });
+      favCount = arr.length;
+    }
+  }catch(e){}
+  refreshFavBtn();
 }
-initCloud();
+function saveFavs(){
+  try{
+    var arr = Object.keys(favSet).map(function(k){ return favSet[k]; });
+    localStorage.setItem(FAV_KEY, JSON.stringify(arr));
+  }catch(e){}
+}
 function curItem(){
   var node = findNode(state.path);
   if(!node || !node.items || state.idx == null) return null;
@@ -666,10 +658,14 @@ function curItem(){
 }
 function itemId(it){ return it.id || ("it_" + state.path.join("/") + "_" + state.idx); }
 var idMap = {};
+var pathKeyMap = {};
 (function walk(ns, path){
   ns.forEach(function(n){
     var p = path.concat([n.id]);
-    (n.items||[]).forEach(function(it, i){ if(it.id) idMap[it.id] = { it: it, path: p, idx: i }; });
+    (n.items||[]).forEach(function(it, i){
+      if(it.id) idMap[it.id] = { it: it, path: p, idx: i };
+      pathKeyMap["it_" + p.join("/") + "_" + i] = { it: it, path: p, idx: i };
+    });
     if(n.children) walk(n.children, p);
   });
 })(CATS, []);
@@ -695,125 +691,60 @@ function showFavTip(msg){
   t._h = setTimeout(function(){ t.classList.remove("show"); }, 1600);
 }
 function favToggle(){
-  if(!CB_AUTH){ showFavTip("收藏服务暂不可用"); return; }
   var it = curItem();
   if(!it) return;
   var id = itemId(it);
-  CB_AUTH.getLoginState().then(function(ls){
-    if(!ls){ showAuth(); return; }
-    if(favSet[id]) favRemove(id);
-    else favAdd(id, it);
-  }, function(){ showFavTip("网络异常，请重试"); });
+  if(favSet[id]) favRemove(id);
+  else favAdd(id, it);
 }
 function favAdd(id, it){
-  if(favBusy) return; favBusy = true;
-  CB_DB.collection("favorites").add({ itemId: id, name: it.name || "", time: Date.now() }).then(function(res){
-    favBusy = false;
-    favSet[id] = res.id || res._id || "1";
-    favCount++;
-    refreshFavBtn();
-    showFavTip("已收藏，登录后任何设备可见");
-  }, function(){ favBusy = false; showFavTip("收藏失败，请重试"); });
+  favSet[id] = { itemId: id, name: it.name || "", time: Date.now() };
+  favCount = Object.keys(favSet).length;
+  saveFavs();
+  refreshFavBtn();
+  showFavTip("已收藏，本浏览器刷新后仍可见");
 }
 function favRemove(id){
-  if(favBusy || !favSet[id]) return; favBusy = true;
-  CB_DB.collection("favorites").doc(favSet[id]).remove().then(function(){
-    favBusy = false;
-    delete favSet[id];
-    favCount--;
-    refreshFavBtn();
-    showFavTip("已取消收藏");
-  }, function(){ favBusy = false; showFavTip("操作失败，请重试"); });
+  delete favSet[id];
+  favCount = Object.keys(favSet).length;
+  saveFavs();
+  refreshFavBtn();
+  showFavTip("已取消收藏");
 }
-function loadFavs(){
-  if(!CB_DB) return;
-  CB_AUTH.getLoginState().then(function(ls){
-    if(!ls){ refreshFavBtn(); return; }
-    CB_DB.collection("favorites").where({ _openid: ls.user.uid }).get().then(function(res){
-      favSet = {}; favCount = 0;
-      (res.data||[]).forEach(function(d){ favSet[d.itemId] = d._id; favCount++; });
-      refreshFavBtn();
-    }, function(){});
-  }, function(){});
-}
-/* ---- 登录弹窗 ---- */
-var authMode = "login";
-function showAuth(){
-  $("auth-email").value = ""; $("auth-pass").value = ""; $("auth-err").textContent = "";
-  authMode = "login";
-  $("auth-title").textContent = "登录后可同步收藏";
-  $("auth-go").textContent = "登录";
-  $("auth-switch").textContent = "没有账号？注册一个";
-  $("auth-mask").style.display = "flex";
-}
-$("auth-close").onclick = function(){ $("auth-mask").style.display = "none"; };
-$("auth-mask").onclick = function(e){ if(e.target === this) this.style.display = "none"; };
-$("auth-switch").onclick = function(){
-  authMode = (authMode === "login") ? "signup" : "login";
-  $("auth-title").textContent = (authMode === "signup") ? "注册账号" : "登录后可同步收藏";
-  $("auth-go").textContent = (authMode === "signup") ? "注册并登录" : "登录";
-  $("auth-switch").textContent = (authMode === "signup") ? "已有账号？去登录" : "没有账号？注册一个";
-  $("auth-err").textContent = "";
-};
-$("auth-go").onclick = function(){
-  if(!CB_AUTH){ $("auth-err").textContent = "云服务未就绪，请刷新重试"; return; }
-  var em = $("auth-email").value.trim();
-  var pw = $("auth-pass").value;
-  if(!em || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ $("auth-err").textContent = "请输入正确的邮箱地址"; return; }
-  if(pw.length < 6){ $("auth-err").textContent = "密码至少 6 位"; return; }
-  $("auth-go").disabled = true;
-  var done = function(err){
-    $("auth-go").disabled = false;
-    if(err){ $("auth-err").textContent = (err && err.message) ? err.message : "操作失败，请重试"; return; }
-    $("auth-mask").style.display = "none";
-    loadFavs();
-    showFavTip("登录成功");
-  };
-  if(authMode === "signup"){ CB_AUTH.signUpWithEmailAndPassword(em, pw).then(function(){ done(); }, done); }
-  else { CB_AUTH.signInWithEmailAndPassword(em, pw).then(function(){ done(); }, done); }
-};
 function showFav(){
   setView("view-fav");
   $("back-fav").style.display = "inline";
   $("back-fav").onclick = function(){ var p = state.prevHash || ""; location.hash = (p && p.indexOf("#/fav") !== 0) ? p : "#/"; };
   $("back-item").style.display = "none";
   $("back-all").style.display = "none";
+  $("fav-sub").textContent = "收藏保存在本浏览器，换设备或清缓存会清空";
   var box = $("fav-grid");
-  if(!CB_DB){
-    $("fav-sub").textContent = "";
-    box.innerHTML = '<div class="fav-empty">收藏服务未配置，请稍后再试</div>';
-    return;
-  }
-  CB_AUTH.getLoginState().then(function(ls){
-    if(!ls){
-      $("fav-sub").textContent = "登录后可在任何设备查看收藏";
-      box.innerHTML = '<div class="fav-empty"><p>还没有登录</p><button class="auth-btn" id="fav-login">登录 / 注册</button></div>';
-      $("fav-login").onclick = showAuth;
-      return;
-    }
-    $("fav-sub").textContent = "已登录：" + (ls.user.email || "");
-    CB_DB.collection("favorites").where({ _openid: ls.user.uid }).get().then(function(res){
-      var list = res.data || [];
-      favSet = {}; favCount = 0;
-      list.forEach(function(d){ favSet[d.itemId] = d._id; favCount++; });
-      refreshFavBtn();
-      var gh = "";
-      list.forEach(function(d){
-        var r = idMap[d.itemId];
-        if(!r) return;
-        gh += '<div class="grid-card" onclick="location.hash=\'#/'+r.path.join("/")+'/'+r.idx+'\'">'
-          + '<img loading="lazy" src="'+itemImg(r.it)+'" alt="'+esc(r.it.name)+'">'
-          + '<div class="gc-name">'+esc(r.it.name)+'</div>'
-          + ((r.it.fabric && String(r.it.fabric).trim()) ? '<div class="gc-fabric">成分：'+esc(r.it.fabric)+'</div>' : "")
-          + '</div>';
-      });
-      box.innerHTML = gh || '<div class="fav-empty">还没有收藏的产品<br>逛一逛，在详情页点心形即可收藏</div>';
-    }, function(){ box.innerHTML = '<div class="fav-empty">加载失败，请重试</div>'; });
-  }, function(){ box.innerHTML = '<div class="fav-empty">加载失败，请重试</div>'; });
+  var gh = "";
+  var list = Object.keys(favSet).map(function(k){ return favSet[k]; }).sort(function(a, b){ return (b.time||0) - (a.time||0); });
+  list.forEach(function(d){
+    var r = idMap[d.itemId] || pathKeyMap[d.itemId];
+    if(!r) return;
+    gh += '<div class="grid-card" onclick="location.hash=\'#/'+r.path.join("/")+'/'+r.idx+'\'">'
+      + '<img loading="lazy" src="'+itemImg(r.it)+'" alt="'+esc(r.it.name)+'">'
+      + '<div class="gc-name">'+esc(r.it.name)+'</div>'
+      + ((r.it.fabric && String(r.it.fabric).trim()) ? '<div class="gc-fabric">成分：'+esc(r.it.fabric)+'</div>' : "")
+      + '</div>';
+  });
+  box.innerHTML = gh || '<div class="fav-empty">还没有收藏的产品<br>逛一逛，在详情页点心形即可收藏</div>';
 }
-if(CB_AUTH){ CB_AUTH.onLoginStateChanged(function(){ loadFavs(); }); }
+loadFavs();
+/* ---- 底部导航栏激活态 ---- */
+function setTabbar(h){
+  h = h || "#/";
+  var on = (h === "#" || h === "#/") ? "tab-home" : (h.indexOf("#/all") === 0 ? "tab-cat" : (h.indexOf("#/fav") === 0 ? "tab-fav" : ""));
+  ["tab-home","tab-cat","tab-fav"].forEach(function(id){
+    var el = $(id);
+    if(el) el.classList.toggle("on", id === on);
+  });
+}
 /* ---- 路由 ---- */
 function route(){
+  setTabbar(location.hash || "#/");
   var h2 = (location.hash || "#/").replace(/^#/, "");
   var parts = h2.split("/").filter(Boolean);
   if(parts.length === 0){ showHome(); return; }
