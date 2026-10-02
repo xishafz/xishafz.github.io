@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>扫雷游戏增强版</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, -apple-system, sans-serif;}
+body{background:#f0f2f5;padding:16px;display:flex;flex-direction:column;align-items:center;}
+#info{margin-bottom:12px;text-align:center;width:100%;max-width:500px}
+#info>div{display:flex;gap:10px;justify-content:center;margin-bottom:10px;font-size:18px;flex-wrap:wrap;}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;}
+button{border:none;padding:9px 12px;border-radius:8px;background:#1677ff;color:white;font-size:15px;cursor:pointer;}
+button.mode-btn{background:#6b7280;}
+button.mode-btn.active{background:#1677ff;}
+button.reset-btn{background:#f53f3f;}
+#board{display:grid;gap:2px;background:#c9d1d9;padding:2px;border-radius:6px;}
+.cell{width:36px;height:36px;background:#e8edf2;border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px;touch-action:none;user-select:none;}
+.cell.open{background:#f8fafc;}
+/*数字配色 */
+.c1{color:#1677ff}
+.c2{color:#00b42a}
+.c3{color:#f53f3f}
+.c4{color:#722ed1}
+.c5{color:#ad6800}
+.c6{color:#009499}
+.c7{color:#595959}
+.c8{color:#262626}
+.tip-text{margin:8px 0;color:#444;font-size:14px}
+</style>
+</head>
+<body>
+<div id="info">
+    <div>
+        <span>剩余地雷：<span id="mineCount">10</span></span>
+        <span>⏱时间：<span id="timeText">0</span></span>
+    </div>
+    <div class="btn-group">
+        <button onclick="startGame(0)">简单 9×9</button>
+        <button onclick="startGame(1)">中等16×16</button>
+        <button onclick="startGame(2)">困难16×30</button>
+        <button class="reset-btn" onclick="restartCurrentLevel()">🔄重置本局</button>
+    </div>
+    <div class="btn-group">
+        <button id="btnOpen" class="mode-btn active" onclick="setMode('open')">🔍翻开</button>
+        <button id="btnFlag" class="mode-btn" onclick="setMode('flag')">🚩插旗</button>
+        <button id="btnQ" class="mode-btn" onclick="setMode('question')">❓疑问</button>
+        <button onclick="showHint()">💡提示</button>
+    </div>
+    <div class="tip-text">当前模式：<span id="modeText">翻开格子</span></div>
+</div>
+<div id="board"></div>
+
+<script>
+//难度配置
+const levels = [
+    {w:9, h:9, mine:10},
+    {w:16, h:16, mine:40},
+    {w:30, h:16, mine:99},
+];
+let boardEl = document.getElementById("board");
+let mineSpan = document.getElementById("mineCount");
+let modeText = document.getElementById("modeText");
+let timeText = document.getElementById("timeText");
+
+let w, h, mineTotal;
+let cellData = [];
+let gameStart = false;
+let remainMine = 0;
+let currentMode = "open";
+let timerId = null;
+let gameTime = 0;
+let currentLevelIndex = 0; //记录当前难度
+
+//切换操作模式
+function setMode(mode){
+    currentMode = mode;
+    document.querySelectorAll(".mode-btn").forEach(b=>b.classList.remove("active"));
+    if(mode === "open"){
+        document.getElementById("btnOpen").classList.add("active");
+        modeText.innerText = "翻开格子";
+    }else if(mode === "flag"){
+        document.getElementById("btnFlag").classList.add("active");
+        modeText.innerText = "🚩插旗标记地雷";
+    }else if(mode === "question"){
+        document.getElementById("btnQ").classList.add("active");
+        modeText.innerText = "❓疑问标记";
+    }
+}
+
+//重置计时器
+function resetTimer(){
+    if(timerId) clearInterval(timerId);
+    gameTime = 0;
+    timeText.innerText = "0";
+    timerId = null;
+}
+//启动计时器
+function startTimer(){
+    resetTimer();
+    timerId = setInterval(()=>{
+        gameTime++;
+        timeText.innerText = gameTime;
+    },1000)
+}
+//停止计时器
+function stopTimer(){
+    if(timerId){
+        clearInterval(timerId);
+        timerId = null;
+    }
+}
+
+// 重置当前难度，重新开局
+function restartCurrentLevel(){
+    startGame(currentLevelIndex);
+}
+
+// 开始游戏
+function startGame(levelIdx){
+    currentLevelIndex = levelIdx;
+    const cfg = levels[levelIdx];
+    w = cfg.w;
+    h = cfg.h;
+    mineTotal = cfg.mine;
+    remainMine = mineTotal;
+    mineSpan.innerText = remainMine;
+    gameStart = false;
+    stopTimer();
+    gameTime = 0;
+    timeText.innerText = "0";
+    boardEl.innerHTML = "";
+    cellData = [];
+    boardEl.style.gridTemplateColumns = `repeat(${w}, 36px)`;
+    setMode("open");
+
+    //初始化数据
+    for(let y=0;y<h;y++){
+        cellData[y] = [];
+        for(let x=0;x<w;x++){
+            cellData[y][x] = {
+                x,y,
+                isMine:false,
+                isOpen:false,
+                mark:"" // ""空 / flag旗子 / q问号
+            };
+            const div = document.createElement("div");
+            div.className = "cell";
+            div.dataset.x = x;
+            div.dataset.y = y;
+            //单击执行当前模式动作
+            div.onclick = ()=>clickCell(x,y);
+            boardEl.appendChild(div);
+        }
+    }
+}
+
+//首次点击生成地雷，保证第一下不会踩雷
+function spawnMines(safeX, safeY){
+    let cnt = 0;
+    while(cnt < mineTotal){
+        let rx = Math.floor(Math.random()*w);
+        let ry = Math.floor(Math.random()*h);
+        if((rx===safeX && ry===safeY) || cellData[ry][rx].isMine) continue;
+        cellData[ry][rx].isMine = true;
+        cnt++;
+    }
+    //计算周围地雷数量
+    calcAround();
+}
+function calcAround(){
+    for(let y=0;y<h;y++){
+        for(let x=0;x<w;x++){
+            const d = cellData[y][x];
+            if(d.isMine) continue;
+            let c = 0;
+            for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+                let nx=x+dx, ny=y+dy;
+                if(nx>=0&&ny>=0&&nx<w&&ny<h && cellData[ny][nx].isMine)c++;
+            }
+            d.around = c;
+        }
+    }
+}
+
+//单击格子，根据当前模式执行动作
+function clickCell(x,y){
+    const d = cellData[y][x];
+    if(d.isOpen) return;
+
+    if(currentMode === "open"){
+        if(d.mark !== "") return; //有旗子/问号不能翻开
+        if(!gameStart){
+            gameStart = true;
+            spawnMines(x,y);
+            startTimer(); //第一下点击启动计时
+        }
+        if(d.isMine){
+            gameOver(false);
+            return;
+        }
+        openCell(x,y);
+        checkWin();
+    }else if(currentMode === "flag"){
+        //插旗模式
+        if(d.mark === "flag"){
+            d.mark = "";
+            remainMine++;
+        }else{
+            d.mark = "flag";
+            remainMine--;
+        }
+        refreshCellUI(x,y);
+        mineSpan.innerText = remainMine;
+    }else if(currentMode === "question"){
+        //问号标记
+        if(d.mark === "q"){
+            d.mark = "";
+        }else{
+            d.mark = "q";
+        }
+        refreshCellUI(x,y);
+    }
+}
+
+//刷新单个格子显示
+function refreshCellUI(x,y){
+    const d = cellData[y][x];
+    const el = getEl(x,y);
+    if(d.mark === "flag") el.innerText = "🚩";
+    else if(d.mark === "q") el.innerText = "❓";
+    else el.innerText = "";
+}
+
+//翻开格子，空白自动扩散
+function openCell(x,y){
+    const d = cellData[y][x];
+    if(d.isOpen) return;
+    d.isOpen = true;
+    const el = getEl(x,y);
+    el.classList.add("open");
+    if(d.around>0){
+        el.innerText = d.around;
+        el.className += ` c${d.around}`;
+    }else{
+        //空白递归
+        for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+            let nx=x+dx, ny=y+dy;
+            if(nx>=0&&ny>=0&&nx<w&&ny<h) openCell(nx,ny);
+        }
+    }
+}
+
+function getEl(x,y){
+    return document.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`)
+}
+
+//💡提示功能：随机找出一个安全格子自动翻开
+function showHint(){
+    if(!gameStart) return;
+    //寻找未翻开、无标记、不是地雷的格子
+    let candidates = [];
+    for(let y=0;y<h;y++){
+        for(let x=0;x<w;x++){
+            const d = cellData[y][x];
+            if(!d.isOpen && !d.isMine && d.mark === ""){
+                candidates.push({x,y});
+            }
+        }
+    }
+    if(candidates.length ===0) return;
+    const pick = candidates[Math.floor(Math.random()*candidates.length)];
+    openCell(pick.x, pick.y);
+    checkWin();
+}
+
+//游戏结束
+function gameOver(isWin){
+    gameStart = false;
+    stopTimer();
+    if(!isWin){
+        //展示全部地雷
+        for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+            const d = cellData[y][x];
+            if(d.isMine && d.mark !== "flag"){
+                getEl(x,y).innerText = "💣";
+            }
+        }
+        alert("游戏结束！踩到地雷！");
+    }else{
+        alert(`🎉恭喜扫雷成功！用时：${gameTime}秒`);
+    }
+}
+
+//判断胜利
+function checkWin(){
+    let openCount = 0;
+    const safeTotal = w*h - mineTotal;
+    for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+        if(cellData[y][x].isOpen) openCount++;
+    }
+    if(openCount >= safeTotal){
+        gameOver(true);
+    }
+}
+
+//默认加载简单难度
+startGame(0);
+</script>
+</body>
+</html>
